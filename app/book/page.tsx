@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { FaWhatsapp } from "react-icons/fa";
 
@@ -14,6 +14,20 @@ export default function BookPage() {
   const [locationLink, setLocationLink] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [serviceType, setServiceType] = useState("Airport Transfer");
+  const [customerEmail, setCustomerEmail] = useState("");
+  useEffect(() => {
+  async function getLoggedInUser() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user?.email) {
+      setCustomerEmail(user.email);
+    }
+  }
+
+  getLoggedInUser();
+}, []);
 
   const isFormValid =
     name.trim().length >= 2 &&
@@ -38,9 +52,10 @@ export default function BookPage() {
       return;
     }
 
-    const { error } = await supabase.from("bookings").insert({
+ const { error } = await supabase.from("bookings").insert({
   name,
   phone,
+  customer_email: customerEmail || null,
   pickup,
   destination,
   pickup_date: pickupDate,
@@ -168,6 +183,11 @@ export default function BookPage() {
           <div className="xl:col-span-2 bg-white rounded-3xl shadow-xl p-6 sm:p-8">
             <h2 className="text-3xl sm:text-4xl font-extrabold">
               Trip Details
+              {customerEmail && (
+  <p className="mt-2 text-sm text-green-700 font-semibold">
+    Signed in as: {customerEmail}
+  </p>
+)}
             </h2>
 
             <p className="text-gray-600 mt-3">

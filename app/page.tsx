@@ -180,7 +180,7 @@ export default function Home() {
             Local Cab
           </p>
           <p className="text-2xl font-bold">
-            ₹1700+
+            ₹1699/- 
           </p>
           <p className="text-xs text-gray-500 mt-1">
     Toll and parking extra
@@ -192,7 +192,7 @@ export default function Home() {
             Kyro Mobility
           </p>
           <p className="text-2xl font-bold text-white">
-            ₹1500
+            ₹1499/-
           </p>
            <p className="text-xs text-green-100 mt-1">
     Including toll and parking
