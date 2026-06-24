@@ -11,7 +11,9 @@ export default function BookPage() {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [pickupDate, setPickupDate] = useState("");
+  const [locationLink, setLocationLink] = useState("");
   const [pickupTime, setPickupTime] = useState("");
+  const [serviceType, setServiceType] = useState("Airport Transfer");
 
   const isFormValid =
     name.trim().length >= 2 &&
@@ -37,15 +39,15 @@ export default function BookPage() {
     }
 
     const { error } = await supabase.from("bookings").insert({
-      name,
-      phone,
-      pickup,
-      destination,
-      pickup_date: pickupDate,
-      pickup_time: pickupTime,
-      passengers: 1,
-    });
-
+  name,
+  phone,
+  pickup,
+  destination,
+  pickup_date: pickupDate,
+  pickup_time: pickupTime,
+  location_link: locationLink || null,
+  passengers: 1,
+});
     if (error) {
       alert(error.message);
     } else {
@@ -57,66 +59,70 @@ export default function BookPage() {
       setDestination("");
       setPickupDate("");
       setPickupTime("");
+      setLocationLink("");
+      setServiceType("Airport Transfer");
     }
   }
 
   return (
-    <main className="min-h-screen bg-[#f4f7fb] text-black">
-      <div className="max-w-7xl mx-auto px-6 py-6">
+    <main className="min-h-screen bg-[#f7f8f2] text-black">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* NAVBAR */}
-        <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
+        <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white rounded-3xl sm:rounded-full shadow-md px-4 sm:px-8 py-4 mb-8">
+          <Link href="/" className="flex items-center justify-center sm:justify-start gap-3">
             <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
               K
             </div>
-            <span className="text-2xl font-bold bg-[#f7f8f2]">
+
+            <span className="text-xl sm:text-2xl font-bold text-green-700 whitespace-nowrap">
               Kyro Mobility
             </span>
           </Link>
 
-          <Link
-            href="/"
-            className="bg-[#f7f8f2] font-bold"
-          >
+          <Link href="/" className="text-center text-green-700 font-bold">
             ← Back Home
           </Link>
         </nav>
 
         {/* HEADER */}
-        <section className="text-center py-12">
-          <div className="inline-block bg-[#ede9fe] text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-6">
-            ● Airport Pickup & Drop Booking
+        <section className="text-center py-8 sm:py-12">
+          <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-5">
+            ● Cab & Travel Service Booking
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-extrabold">
-            Book Your <span className="bg-[#f7f8f2]">Airport Transfer</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
+            Book Your <span className="text-green-700">Ride</span>
           </h1>
 
-          <p className="text-gray-600 text-lg mt-5 max-w-2xl mx-auto">
-            Schedule a reliable airport transfer from Jamshedpur to Ranchi Airport
-            or Kolkata Airport with comfortable vehicles and transparent pricing.
+          <p className="text-gray-600 text-base sm:text-lg mt-5 max-w-2xl mx-auto">
+            Schedule airport transfers, outstation trips, hotel guest travel or corporate travel support with Kyro Mobility.
           </p>
         </section>
 
-        <section className="grid lg:grid-cols-3 gap-8 items-start">
-          {/* LEFT INFO */}
-          <div className="lg:col-span-1 space-y-6">
+        {/* MAIN BOOKING LAYOUT */}
+        <section className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+          {/* LEFT INFO BOXES */}
+          <div className="xl:col-span-1 flex flex-col gap-6">
             <div className="bg-white rounded-3xl shadow-md p-6">
-              <h2 className="text-2xl font-extrabold mb-4">
+              <h2 className="text-2xl font-extrabold mb-5">
                 Available Routes
               </h2>
 
-              <div className="space-y-4">
-                <div className="bg-[#f4f7fb] p-4 rounded-xl">
-                  <p className="font-bold">Jamshedpur ↔ Ranchi Airport</p>
-                  <p className="text-gray-500 text-sm mt-1">
+              <div className="space-y-5">
+                <div>
+                  <h3 className="text-lg font-bold">
+                    Jamshedpur ↔ Ranchi Airport
+                  </h3>
+                  <p className="text-gray-600 mt-1">
                     Pickup and drop available.
                   </p>
                 </div>
 
-                <div className="bg-[#f4f7fb] p-4 rounded-xl">
-                  <p className="font-bold">Jamshedpur ↔ Kolkata Airport</p>
-                  <p className="text-gray-500 text-sm mt-1">
+                <div>
+                  <h3 className="text-lg font-bold">
+                    Jamshedpur ↔ Kolkata Airport
+                  </h3>
+                  <p className="text-gray-600 mt-1">
                     Pickup and drop available.
                   </p>
                 </div>
@@ -124,7 +130,7 @@ export default function BookPage() {
             </div>
 
             <div className="bg-white rounded-3xl shadow-md p-6">
-              <h2 className="text-2xl font-extrabold mb-4">
+              <h2 className="text-2xl font-extrabold mb-5">
                 Why Book with Kyro Mobility?
               </h2>
 
@@ -142,7 +148,7 @@ export default function BookPage() {
                 Need Help?
               </h2>
 
-              <p className="mt-3 text-green-50">
+              <p className="mt-3 text-green-50 leading-relaxed">
                 You can also contact us directly on WhatsApp for instant booking support.
               </p>
 
@@ -150,130 +156,154 @@ export default function BookPage() {
                 href="https://wa.me/919279167887"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 bg-white bg-[#f7f8f2] px-5 py-3 rounded-xl font-bold"
+                className="mt-5 inline-flex items-center justify-center gap-2 bg-white text-green-700 px-5 py-3 rounded-xl font-bold shadow hover:bg-gray-100 w-full sm:w-auto"
               >
-                <FaWhatsapp />
+                <FaWhatsapp className="text-green-600" size={22} />
                 WhatsApp Now
               </a>
             </div>
           </div>
 
-          {/* BOOKING FORM */}
-          <div className="lg:col-span-2 bg-white rounded-3xl shadow-xl p-8">
-            <h2 className="text-3xl font-extrabold mb-2">
+          {/* RIGHT BOOKING FORM */}
+          <div className="xl:col-span-2 bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+            <h2 className="text-3xl sm:text-4xl font-extrabold">
               Trip Details
             </h2>
 
-            <p className="text-gray-500 mb-8">
+            <p className="text-gray-600 mt-3">
               Fill the details below. Our team will contact you to confirm the trip.
             </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mt-8">
+  {/* FULL NAME */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Full Name
+    </label>
+    <input
+      value={name}
+      maxLength={20}
+      onChange={(e) => setName(e.target.value)}
+      placeholder="Enter your name"
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+    <p className="text-xs text-gray-400 mt-1">
+      Maximum 20 characters.
+    </p>
+  </div>
 
-            <div className="grid md:grid-cols-2 gap-5">
-              <div>
-                <label className="text-sm font-semibold text-gray-600">
-                  Full Name
-                </label>
-                <input
-                  value={name}
-                  maxLength={20}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-                />
-                <p className="text-xs text-gray-400 mt-1">
-                  Maximum 20 characters.
-                </p>
-              </div>
+  {/* PHONE NUMBER */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Phone Number
+    </label>
+    <input
+      type="tel"
+      value={phone}
+      maxLength={10}
+      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+      placeholder="10 digit mobile number"
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+    <p className="text-xs text-gray-400 mt-1">
+      Phone number must be exactly 10 digits.
+    </p>
+  </div>
 
-              <div>
-                <label className="text-sm font-semibold text-gray-600">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  maxLength={10}
-                  onChange={(e) =>
-                    setPhone(e.target.value.replace(/\D/g, ""))
-                  }
-                  placeholder="10 digit mobile number"
-                  className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-                />
-                <p className="text-xs text-gray-400 mt-1">
-                  Phone number must be exactly 10 digits.
-                </p>
-              </div>
-<div>
-  <label className="text-sm font-semibold text-gray-600">
-    Service Type
-  </label>
+  {/* SERVICE TYPE */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Service Type
+    </label>
+    <select
+      value={serviceType}
+      onChange={(e) => setServiceType(e.target.value)}
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700 bg-white"
+    >
+      <option>Airport Transfer</option>
+      <option>Outstation Trip</option>
+      <option>Hotel Guest Travel</option>
+      <option>Corporate Travel</option>
+    </select>
+  </div>
 
-  <select
-    className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-  >
-    <option>Airport Transfer</option>
-    <option>Outstation Trip</option>
-    <option>Hotel Guest Travel</option>
-    <option>Corporate Travel</option>
-  </select>
+  {/* PICKUP ADDRESS */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Complete Pickup Address
+    </label>
+    <input
+      value={pickup}
+      onChange={(e) => setPickup(e.target.value)}
+      placeholder="Example: HNO, Locality, Landmark, Area, City"
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+  </div>
+
+  {/* DROP ADDRESS */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Drop Address
+    </label>
+    <input
+      value={destination}
+      onChange={(e) => setDestination(e.target.value)}
+      placeholder="Example: Ranchi Airport"
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+  </div>
+
+  {/* PICKUP DATE */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Pickup Date
+    </label>
+    <input
+      type="date"
+      value={pickupDate}
+      min={new Date().toISOString().split("T")[0]}
+      onChange={(e) => setPickupDate(e.target.value)}
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+  </div>
+
+  {/* PICKUP TIME */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Pickup Time
+    </label>
+    <input
+      type="time"
+      value={pickupTime}
+      onChange={(e) => setPickupTime(e.target.value)}
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+  </div>
+
+  {/* LOCATION LINK */}
+  <div>
+    <label className="text-sm font-semibold text-gray-600">
+      Location Link <span className="text-gray-400">(Optional)</span>
+    </label>
+
+    <input
+      type="url"
+      value={locationLink}
+      onChange={(e) => setLocationLink(e.target.value)}
+      placeholder="Paste Google Maps location link"
+      className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    />
+
+    <p className="text-xs text-gray-400 mt-1">
+      Customer can paste Google Maps location link here.
+    </p>
+  </div>
 </div>
-              <div>
-                <label className="text-sm font-semibold text-gray-600">
-                  Pickup Address
-                </label>
-                <input
-                  value={pickup}
-                  onChange={(e) => setPickup(e.target.value)}
-                  placeholder="Example: Sakchi, Jamshedpur"
-                  className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-semibold text-gray-600">
-                  Drop Address
-                </label>
-                <input
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  placeholder="Example: Ranchi Airport"
-                  className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-semibold text-gray-600">
-                  Pickup Date
-                </label>
-                <input
-                  type="date"
-                  value={pickupDate}
-                  min={new Date().toISOString().split("T")[0]}
-                  onChange={(e) => setPickupDate(e.target.value)}
-                  className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-semibold text-gray-600">
-                  Pickup Time
-                </label>
-                <input
-                  type="time"
-                  value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
-                />
-              </div>
-            </div>
-
-            <div className="text-green-700 border border-green-100 rounded-2xl p-5 mt-8">
+            <div className="bg-green-50 border border-green-100 rounded-2xl p-5 mt-8">
               <h3 className="font-bold text-green-800">
                 Booking Note
               </h3>
               <p className="text-gray-600 mt-2">
-                This is a booking request. Final fare, vehicle availability and pickup
-                time will be confirmed by our team on call or WhatsApp.
+                This is a booking request. Final fare, vehicle availability and pickup time will be confirmed by our team on call or WhatsApp.
               </p>
             </div>
 
@@ -290,36 +320,6 @@ export default function BookPage() {
             </button>
           </div>
         </section>
-
-        {/* PROCESS */}
-        <section className="py-16">
-          <h2 className="text-3xl font-extrabold text-center mb-8">
-            How Booking Works
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow text-center">
-              <h3 className="text-xl font-bold bg-[#f7f8f2]">1. Submit</h3>
-              <p className="text-gray-600 mt-3">
-                Fill your trip details and submit the booking request.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow text-center">
-              <h3 className="text-xl font-bold bg-[#f7f8f2]">2. Confirm</h3>
-              <p className="text-gray-600 mt-3">
-                Our team confirms fare, timing and vehicle availability.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow text-center">
-              <h3 className="text-xl font-bold bg-[#f7f8f2]">3. Travel</h3>
-              <p className="text-gray-600 mt-3">
-                Enjoy a comfortable airport transfer with Kyro Mobility.
-              </p>
-            </div>
-          </div>
-        </section>
       </div>
 
       {/* FLOATING WHATSAPP */}
@@ -327,9 +327,9 @@ export default function BookPage() {
         href="https://wa.me/919279167887"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-green-700 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
+        className="fixed bottom-5 right-5 bg-green-600 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
       >
-        <FaWhatsapp size={34} />
+        <FaWhatsapp size={26} />
       </a>
     </main>
   );

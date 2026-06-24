@@ -38,7 +38,7 @@ export default function LoginPage() {
     <main className="min-h-screen bg-[#f4f7fb] flex items-center justify-center px-6">
       <div className="bg-white max-w-xl w-full rounded-3xl shadow-xl p-10 border">
         <div className="text-center">
-          <Link href="/" className="bg-[#f7f8f2] font-bold">
+          <Link href="/" className="text-green-700 font-bold">
             ← Back to Home
           </Link>
 
@@ -98,10 +98,10 @@ export default function LoginPage() {
           </button>
 
           {message && (
-            <p className="mt-6 bg-[#f7f8f2] font-semibold text-center">
-              {message}
-            </p>
-          )}
+  <p className="mt-6 text-black font-semibold text-center bg-white border border-gray-200 rounded-xl py-3 px-4">
+    {message} ✅
+  </p>
+)}
 
           <p className="text-xs text-gray-400 mt-8 text-center">
             A secure booking access link will be sent to your email.

@@ -347,9 +347,9 @@ export default function Home() {
           </div>
 
           <div className="bg-white/10 rounded-2xl p-4 sm:p-6">
-            <p className="text-2xl sm:text-3xl font-extrabold">₹</p>
+            <p className="text-2xl sm:text-3xl font-extrabold">₹0</p>
             <p className="mt-2 text-green-50 text-sm sm:text-base">
-              Clear pricing
+              Hidden charges
             </p>
           </div>
 
