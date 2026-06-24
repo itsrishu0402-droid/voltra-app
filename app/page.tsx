@@ -7,40 +7,44 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* NAVBAR */}
-        <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4 mt-6 mb-10">
-          <div className="flex items-center gap-2">
-            <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
-              K
-            </div>
-            <span className="text-2xl font-bold text-black-700">
-  Kyro Mobility
-</span>
-          </div>
+       <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white rounded-3xl sm:rounded-full shadow-md px-4 sm:px-8 py-4 mt-4 sm:mt-6 mb-8">
+  <Link
+    href="/"
+    className="flex items-center justify-center sm:justify-start gap-3"
+  >
+    <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
+      K
+    </div>
 
-          <div className="hidden md:flex gap-8 text-gray-700 font-medium">
-            <a href="#services">Services</a>
-            <a href="#routes">Routes</a>
-            <a href="#fleet">Fleet</a>
-            <a href="#savings">Savings</a>
-            <a href="#faqs">FAQs</a>
-          </div>
+    <span className="text-xl sm:text-2xl font-bold text-green-700 whitespace-nowrap">
+      Kyro Mobility
+    </span>
+  </Link>
 
-          <Link
+  <div className="hidden lg:flex gap-8 text-gray-700 font-medium">
+    <a href="#services">Services</a>
+    <a href="#routes">Routes</a>
+    <a href="#fleet">Fleet</a>
+    <a href="#savings">Savings</a>
+    <a href="#faqs">FAQs</a>
+  </div>
+
+ <Link
   href="/login"
-  className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
+  className="w-full sm:w-auto text-center bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
 >
   Schedule Booking 🚕
 </Link>
-        </nav>
+</nav>
 
         {/* HERO */}
         <section id="services" className="bg-white rounded-3xl shadow-sm py-16 px-8 mt-6">
   <div className="max-w-7xl mx-auto px-6">
-    <h2 className="text-3xl font-extrabold mb-8">
+    <h2 className="text-3xl sm:text-5xl font-extrabold mb-8">
       Our Services
     </h2>
 
-    <div className="grid md:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
   <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
     <h3 className="text-xl font-bold">
       ✈ Airport Transfers
@@ -91,27 +95,27 @@ export default function Home() {
 </div>
   </div>
 </section>
-        <section className="grid md:grid-cols-2 gap-12 items-center py-16">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-10 sm:py-16">
   {/* LEFT SIDE TEXT */}
   <div>
     <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-8">
       ● Premium Airport Transfers from Jamshedpur
     </div>
 
-    <h1 className="text-6xl md:text-7xl font-extrabold leading-tight">
+    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight">
       Travel Smart <br />
       <span className="text-green-700">
         Save More.
       </span>
     </h1>
 
-    <p className="text-xl text-gray-600 mt-8 leading-relaxed max-w-xl">
+    <p className="text-base sm:text-xl text-gray-600 mt-6 sm:mt-8 leading-relaxed max-w-xl">
       Book reliable airport transfers from Jamshedpur to Ranchi Airport
       and Kolkata Airport with transparent pricing, comfortable vehicles
       and professional service.
     </p>
 
-    <div className="flex flex-wrap gap-4 mt-10">
+    <div className="flex flex-col sm:flex-row gap-4 mt-8 sm:mt-10">
       <Link
         href="/login"
         className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
@@ -198,11 +202,11 @@ export default function Home() {
       {/* SERVICES */}
       <section id="services" className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-extrabold mb-8">
+          <h2 className="text-3xl sm:text-5xl font-extrabold mb-8">
             Why Choose Kyro Mobility?
           </h2>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <div className="border rounded-2xl p-6">
               <h3 className="text-xl font-bold">✈ Airport Specialists</h3>
               <p className="text-gray-600 mt-3">
@@ -349,7 +353,7 @@ export default function Home() {
       {/* ROUTES */}
       <section id="routes" className="py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-extrabold mb-8">
+          <h2 className="text-3xl sm:text-5xl font-extrabold mb-8">
             Airport Transfer Routes
           </h2>
 
@@ -381,9 +385,9 @@ export default function Home() {
         href="https://wa.me/919279167887"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
+        className="fixed bottom-5 right-5 bg-green-600 text-white w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
       >
-        <FaWhatsapp size={34} />
+        <FaWhatsapp size={28} />
       </a>
     </div>
   </main>
