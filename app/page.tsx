@@ -7,7 +7,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* NAVBAR */}
-        <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4 mt-6">
+        <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4 mt-6 mb-10">
           <div className="flex items-center gap-2">
             <div className="bg-green-600 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
               K
@@ -34,7 +34,7 @@ export default function Home() {
         </nav>
 
         {/* HERO */}
-        <section id="services" className="bg-white py-16">
+        <section id="services" className="bg-white rounded-3xl shadow-sm py-16 px-8 mt-6">
   <div className="max-w-7xl mx-auto px-6">
     <h2 className="text-3xl font-extrabold mb-8">
       Our Services
@@ -144,7 +144,7 @@ export default function Home() {
 
               <div className="flex justify-between items-end mt-2">
                 <h2 className="text-4xl font-extrabold text-green-700">
-                  ₹100+
+                  ₹200+
                 </h2>
                 <p className="text-sm text-gray-500">
                   Per Ranchi airport trip
@@ -169,7 +169,7 @@ export default function Home() {
 
                 <div className="bg-green-50 p-5 rounded-xl">
                   <p className="text-gray-500 text-sm">Kyro Mobility</p>
-                  <p className="text-2xl font-bold text-green-700">₹1600</p>
+                  <p className="text-2xl font-bold text-green-700">₹1500</p>
                 </div>
               </div>
 
@@ -220,6 +220,118 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* SMALL SAVINGS SECTION */}
+<section className="py-20">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center mb-12">
+      <h2 className="text-5xl font-extrabold">
+        Small Savings.{" "}
+        <span className="text-green-700">Big Difference.</span>
+      </h2>
+
+      <p className="text-gray-600 text-lg mt-4 max-w-2xl mx-auto">
+        Every trip with Kyro Mobility helps you save more compared to usual
+        local cab pricing while giving you a reliable and comfortable ride.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-6">
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
+        <div className="text-4xl mb-4">✈️</div>
+
+        <h3 className="text-2xl font-bold">
+          1 Airport Trip
+        </h3>
+
+        <p className="text-green-700 font-semibold mt-2">
+          Save on every ride
+        </p>
+
+        <p className="text-gray-600 mt-4 leading-relaxed">
+          A single Jamshedpur to Ranchi Airport trip can already help you save
+          compared to typical local cab fares.
+        </p>
+      </div>
+
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
+        <div className="text-4xl mb-4">💰</div>
+
+        <h3 className="text-2xl font-bold">
+          5 Regular Trips
+        </h3>
+
+        <p className="text-green-700 font-semibold mt-2">
+          Bigger monthly savings
+        </p>
+
+        <p className="text-gray-600 mt-4 leading-relaxed">
+          Frequent airport travelers can see their total savings grow over time,
+          especially when using Kyro Mobility regularly.
+        </p>
+      </div>
+
+      <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
+        <div className="text-4xl mb-4">🚗</div>
+
+        <h3 className="text-2xl font-bold">
+          Better Travel Experience
+        </h3>
+
+        <p className="text-green-700 font-semibold mt-2">
+          Value beyond price
+        </p>
+
+        <p className="text-gray-600 mt-4 leading-relaxed">
+          Along with savings, you get clean vehicles, better planning,
+          transparent service and reliable pickup support.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section className="pb-20">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-green-700 text-white rounded-3xl p-10 md:p-14 shadow-lg">
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <h2 className="text-4xl md:text-5xl font-extrabold leading-tight">
+            Travel Smarter with
+            <br />
+            Kyro Mobility
+          </h2>
+
+          <p className="mt-5 text-green-50 text-lg leading-relaxed">
+            From airport transfers to outstation and hotel travel support,
+            Kyro Mobility focuses on reliable service, comfortable rides and
+            better value for every customer.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white/10 rounded-2xl p-6">
+            <p className="text-3xl font-extrabold">24/7</p>
+            <p className="mt-2 text-green-50">Booking support</p>
+          </div>
+
+          <div className="bg-white/10 rounded-2xl p-6">
+            <p className="text-3xl font-extrabold">2+</p>
+            <p className="mt-2 text-green-50">Primary routes available</p>
+          </div>
+
+          <div className="bg-white/10 rounded-2xl p-6">
+            <p className="text-3xl font-extrabold">₹1500/3000</p>
+            <p className="mt-2 text-green-50">Transparent pricing approach</p>
+          </div>
+
+          <div className="bg-white/10 rounded-2xl p-6">
+            <p className="text-3xl font-extrabold">100%</p>
+            <p className="mt-2 text-green-50">Customer-focused service</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ROUTES */}
       <section id="routes" className="py-16">
