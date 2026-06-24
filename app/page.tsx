@@ -249,12 +249,13 @@ export default function Home() {
 <section className="py-20">
   <div className="max-w-7xl mx-auto px-6">
     <div className="text-center mb-12">
-      <h2 className="text-5xl font-extrabold">
-        <span className="text-green-700">Small Savings.</span>{" "}
-        <span className="bg-[#f7f8f2]">Big Difference.</span>
-      </h2>
+      <h2 className="text-3xl sm:text-5xl font-extrabold leading-tight text-center">
+  <span className="text-green-700">Small Savings.</span>
+  <br className="sm:hidden" />
+  <span className="text-white sm:text-black"> Big Difference.</span>
+</h2>
 
-      <p className="text-gray-600 text-lg mt-4 max-w-2xl mx-auto">
+      <p className="text-gray-300 sm:text-gray-600 text-base sm:text-lg mt-4 max-w-2xl mx-auto leading-relaxed px-2">
         Every trip with Kyro Mobility helps you save more compared to usual
         local cab pricing while giving you a reliable and comfortable ride.
       </p>
