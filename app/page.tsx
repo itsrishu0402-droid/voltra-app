@@ -1,148 +1,206 @@
-"use client";
-
-import { useState } from "react";
-import { supabase } from "../lib/supabase";
+import Link from "next/link";
 
 export default function Home() {
-const [name, setName] = useState("");
-const [phone, setPhone] = useState("");
-const [pickup, setPickup] = useState("");
-const [destination, setDestination] = useState("");
-const [pickupDate, setPickupDate] = useState("");
-const [pickupTime, setPickupTime] = useState("");
+  return (
+    <main className="min-h-screen bg-[#f7f8f2] text-black">
+      <div className="max-w-7xl mx-auto px-6">
 
-async function submitBooking() {
-  if (!pickupDate || !pickupTime) {
-    alert("Please select a date and time.");
-    return;
-  }
+        {/* NAVBAR */}
+        <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4 mt-6">
+          <div className="flex items-center gap-2">
+            <div className="bg-green-600 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
+              V
+            </div>
+            <span className="text-2xl font-bold text-green-700">
+              Voltra
+            </span>
+          </div>
 
-  const selectedDateTime = new Date(`${pickupDate}T${pickupTime}`);
+          <div className="hidden md:flex gap-8 text-gray-700 font-medium">
+            <a href="#services">Services</a>
+            <a href="#routes">Routes</a>
+            <a href="#fleet">Fleet</a>
+            <a href="#savings">Savings</a>
+            <a href="#faqs">FAQs</a>
+          </div>
 
-  const now = new Date();
+          <Link
+            href="/book"
+            className="bg-green-700 text-white px-6 py-3 rounded-full font-bold shadow"
+          >
+            Book Ride 🚕
+          </Link>
+        </nav>
 
-  if (selectedDateTime <= now) {
-    alert("Please select a future date and time.");
-    return;
-  }
+        {/* HERO */}
+        <section className="grid md:grid-cols-2 gap-12 items-center py-20">
+          <div>
+            <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-8">
+              ● Premium Airport Transfers from Jamshedpur
+            </div>
 
-  const { error } = await supabase.from("bookings").insert({
-    name,
-    phone,
-    pickup,
-    destination,
-    pickup_date: pickupDate,
-    pickup_time: pickupTime,
-    passengers: 1,
-  });
+            <h1 className="text-6xl md:text-7xl font-extrabold leading-tight">
+              Travel Smart <br />
+              <span className="text-green-700">
+                Save More.
+              </span>
+            </h1>
 
-if (error) {
-  console.log("SUPABASE ERROR:", error);
-  alert(error.message);
-} else {
-  alert("Booking submitted successfully!");
+            <p className="text-xl text-gray-600 mt-8 leading-relaxed max-w-xl">
+              Book reliable airport transfers from Jamshedpur to Ranchi Airport
+              and Kolkata Airport with transparent pricing, comfortable vehicles
+              and professional service.
+            </p>
 
-  setName("");
-  setPhone("");
-  setPickup("");
-  setDestination("");
-  setPickupDate("");
-  setPickupTime("");
-}
+            <div className="flex flex-wrap gap-4 mt-10">
+              <Link
+                href="/book"
+                className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
+              >
+                Schedule Booking 🚕
+              </Link>
 
-}
+              <a
+                href="https://wa.me/919279167887"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white border border-gray-300 px-8 py-4 rounded-xl font-bold shadow"
+              >
+                WhatsApp Now
+              </a>
+            </div>
 
-return ( <main className="min-h-screen bg-black text-white p-6"> <div className="max-w-4xl mx-auto"> <h1 className="text-6xl font-bold text-green-400 text-center">
-VOLTRA </h1>
+            <div className="flex flex-wrap gap-6 mt-10 text-sm font-bold text-gray-600">
+              <span>✈ Airport Specialists</span>
+              <span>💰 Fixed Pricing</span>
+              <span>🚗 Comfortable Vehicles</span>
+            </div>
+          </div>
 
-```
-    <p className="text-center text-2xl mt-4">
-      Premium EV Airport Transfers
-    </p>
+          {/* RIGHT CARD */}
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div className="bg-green-50 p-6 border-b">
+              <p className="text-sm font-bold text-green-700">
+                EST. SAVINGS
+              </p>
 
-    <p className="text-center text-gray-300 mt-2">
-      Reliable • Comfortable • Eco-Friendly
-    </p>
+              <div className="flex justify-between items-end mt-2">
+                <h2 className="text-4xl font-extrabold text-green-700">
+                  ₹100+
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Per Ranchi airport trip
+                </p>
+              </div>
+            </div>
 
-    <div className="flex justify-center gap-4 mt-8">
-      <a
-        href="#booking"
-        className="px-6 py-3 bg-green-500 text-black font-bold rounded-lg"
-      >
-        Book Now
-      </a>
+            <div className="p-6">
+              <p className="text-sm font-bold text-gray-500 mb-3">
+                ROUTE
+              </p>
 
+              <div className="bg-[#f7f8f2] rounded-xl p-4 mb-5">
+                Jamshedpur ↔ Ranchi Airport
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-5 rounded-xl">
+                  <p className="text-gray-500 text-sm">Local Cab</p>
+                  <p className="text-2xl font-bold">₹1700+</p>
+                </div>
+
+                <div className="bg-green-50 p-5 rounded-xl">
+                  <p className="text-gray-500 text-sm">Voltra</p>
+                  <p className="text-2xl font-bold text-green-700">₹1600</p>
+                </div>
+              </div>
+
+              <p className="text-gray-500 text-sm mt-5">
+                Customers can later check their total trips and savings using
+                their phone number.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* SERVICES */}
+      <section id="services" className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl font-extrabold mb-8">
+            Why Choose Voltra?
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="border rounded-2xl p-6">
+              <h3 className="text-xl font-bold">✈ Airport Specialists</h3>
+              <p className="text-gray-600 mt-3">
+                Focused only on airport pickup and drop services.
+              </p>
+            </div>
+
+            <div className="border rounded-2xl p-6">
+              <h3 className="text-xl font-bold">⏰ On-Time Pickup</h3>
+              <p className="text-gray-600 mt-3">
+                Planned rides for better time management.
+              </p>
+            </div>
+
+            <div className="border rounded-2xl p-6">
+              <h3 className="text-xl font-bold">💰 Transparent Fare</h3>
+              <p className="text-gray-600 mt-3">
+                Clear pricing without unnecessary surprises.
+              </p>
+            </div>
+
+            <div className="border rounded-2xl p-6">
+              <h3 className="text-xl font-bold">🚗 Comfortable Vehicles</h3>
+              <p className="text-gray-600 mt-3">
+                Tata Punch and Ertiga CNG for comfortable travel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROUTES */}
+      <section id="routes" className="py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl font-extrabold mb-8">
+            Airport Transfer Routes
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl p-6 shadow">
+              <h3 className="text-2xl font-bold">
+                Jamshedpur ↔ Ranchi Airport
+              </h3>
+              <p className="text-gray-600 mt-3">
+                Available for pickup and drop.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow">
+              <h3 className="text-2xl font-bold">
+                Jamshedpur ↔ Kolkata Airport
+              </h3>
+              <p className="text-gray-600 mt-3">
+                Available for pickup and drop.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FLOATING WHATSAPP */}
       <a
         href="https://wa.me/919279167887"
         target="_blank"
         rel="noopener noreferrer"
-        className="px-6 py-3 border border-green-500 rounded-lg"
+        className="fixed bottom-6 right-6 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-xl"
       >
-        WhatsApp Us
+        ☎
       </a>
-    </div>
-
-    <section
-      id="booking"
-      className="mt-16 bg-gray-900 p-6 rounded-xl"
-    >
-      <h2 className="text-3xl font-bold mb-6">
-        Book Your Airport Transfer
-      </h2>
-
-      <div className="grid gap-4">
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Full Name"
-          className="p-3 rounded bg-black border border-gray-700"
-        />
-
-        <input
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Phone Number"
-          className="p-3 rounded bg-black border border-gray-700"
-        />
-
-        <input
-          value={pickup}
-          onChange={(e) => setPickup(e.target.value)}
-          placeholder="Pickup Location"
-          className="p-3 rounded bg-black border border-gray-700"
-        />
-
-        <input
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          placeholder="Destination"
-          className="p-3 rounded bg-black border border-gray-700"
-        />
-
-        <input
-          type="date"
-          value={pickupDate}
-          min={new Date().toISOString().split("T")[0]}
-          onChange={(e) => setPickupDate(e.target.value)}
-          className="p-3 rounded bg-black border border-gray-700"
-        />
-
-        <input
-          type="time"
-          value={pickupTime}
-          onChange={(e) => setPickupTime(e.target.value)}
-          className="p-3 rounded bg-black border border-gray-700"
-        />
-
-        <button
-          onClick={submitBooking}
-          className="bg-green-500 text-black font-bold p-3 rounded"
-        >
-          Submit Booking
-        </button>
-      </div>
-    </section>
-  </div>
     </main>
-);
+  );
 }
