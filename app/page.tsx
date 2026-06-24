@@ -3,18 +3,18 @@ import { FaWhatsapp } from "react-icons/fa";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f7f8f2] text-black">
+    <main className="min-h-screen bg-[#f4f7fb] text-black">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* NAVBAR */}
         <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4 mt-6 mb-10">
           <div className="flex items-center gap-2">
-            <div className="bg-green-600 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
+            <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
               K
             </div>
-            <span className="text-2xl font-bold text-green-700">
-              Kyro Mobility
-            </span>
+            <span className="text-2xl font-bold text-black-700">
+  Kyro Mobility
+</span>
           </div>
 
           <div className="hidden md:flex gap-8 text-gray-700 font-medium">
@@ -41,146 +41,159 @@ export default function Home() {
     </h2>
 
     <div className="grid md:grid-cols-4 gap-6">
-      <div className="border rounded-2xl p-6 shadow-sm">
-        <h3 className="text-xl font-bold text-green-700">
-          ✈ Airport Transfers
-        </h3>
-        <p className="text-gray-600 mt-3">
-          Jamshedpur to Ranchi Airport and Kolkata Airport pickup & drop.
-        </p>
-        <p className="text-sm font-bold text-green-700 mt-4">
-          Available Now
-        </p>
-      </div>
+  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+    <h3 className="text-xl font-bold">
+      ✈ Airport Transfers
+    </h3>
+    <p className="text-gray-600 mt-3">
+      Jamshedpur to Ranchi Airport and Kolkata Airport pickup & drop.
+    </p>
+    <p className="text-sm font-bold text-green-500 mt-4">
+      Available Now
+    </p>
+  </div>
 
-      <div className="border rounded-2xl p-6 shadow-sm">
-        <h3 className="text-xl font-bold text-green-700">
-          🚗 Outstation Trips
-        </h3>
-        <p className="text-gray-600 mt-3">
-          Comfortable rides for nearby cities and planned long-distance trips.
-        </p>
-        <p className="text-sm font-bold text-gray-500 mt-4">
-          On Request
-        </p>
-      </div>
+  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+    <h3 className="text-xl font-bold">
+      🚗 Outstation Trips
+    </h3>
+    <p className="text-gray-600 mt-3">
+      Comfortable rides for nearby cities and planned long-distance trips.
+    </p>
+    <p className="text-sm font-bold text-green-700 mt-4">
+      On Request
+    </p>
+  </div>
 
-      <div className="border rounded-2xl p-6 shadow-sm">
-        <h3 className="text-xl font-bold text-green-700">
-          🏨 Hotel Guest Travel
-        </h3>
-        <p className="text-gray-600 mt-3">
-          Reliable cab support for hotel guests, airport pickup and local travel.
-        </p>
-        <p className="text-sm font-bold text-gray-500 mt-4">
-          On Request
-        </p>
-      </div>
+  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+    <h3 className="text-xl font-bold">
+      🏨 Hotel Guest Travel
+    </h3>
+    <p className="text-gray-600 mt-3">
+      Reliable cab support for hotel guests, airport pickup and local travel.
+    </p>
+    <p className="text-sm font-bold text-green-700 mt-4">
+      On Request
+    </p>
+  </div>
 
-      <div className="border rounded-2xl p-6 shadow-sm">
-        <h3 className="text-xl font-bold text-green-700">
-          🧳 Corporate Travel
-        </h3>
-        <p className="text-gray-600 mt-3">
-          Professional travel support for business visitors and company guests.
-        </p>
-        <p className="text-sm font-bold text-gray-500 mt-4">
-          Coming Soon
+  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+    <h3 className="text-xl font-bold">
+      🧳 Corporate Travel
+    </h3>
+    <p className="text-gray-600 mt-3">
+      Professional travel support for business visitors and company guests.
+    </p>
+    <p className="text-sm font-bold text-gray-500 mt-4">
+      Coming Soon
+    </p>
+  </div>
+</div>
+  </div>
+</section>
+        <section className="grid md:grid-cols-2 gap-12 items-center py-16">
+  {/* LEFT SIDE TEXT */}
+  <div>
+    <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-8">
+      ● Premium Airport Transfers from Jamshedpur
+    </div>
+
+    <h1 className="text-6xl md:text-7xl font-extrabold leading-tight">
+      Travel Smart <br />
+      <span className="text-green-700">
+        Save More.
+      </span>
+    </h1>
+
+    <p className="text-xl text-gray-600 mt-8 leading-relaxed max-w-xl">
+      Book reliable airport transfers from Jamshedpur to Ranchi Airport
+      and Kolkata Airport with transparent pricing, comfortable vehicles
+      and professional service.
+    </p>
+
+    <div className="flex flex-wrap gap-4 mt-10">
+      <Link
+        href="/login"
+        className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
+      >
+        Schedule Booking 🚕
+      </Link>
+
+      <a
+        href="https://wa.me/919279167887"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-white border border-gray-300 px-8 py-4 rounded-xl font-bold shadow"
+      >
+        WhatsApp Now
+      </a>
+    </div>
+
+    <div className="flex flex-wrap gap-6 mt-10 text-sm font-bold text-gray-600">
+      <span>✈ Airport Specialists</span>
+      <span>💰 Fixed Pricing</span>
+      <span>🚗 Comfortable Vehicles</span>
+    </div>
+  </div>
+
+  {/* RIGHT SIDE SAVINGS CARD */}
+  <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+    <div className="bg-green-700 p-6 border-b border-green-800">
+      <p className="text-sm font-bold text-white">
+        EST. SAVINGS
+      </p>
+
+      <div className="flex justify-between items-end mt-2">
+        <h2 className="text-5xl font-extrabold text-white">
+          ₹200+
+        </h2>
+        <p className="text-sm text-green-100">
+          Per Ranchi airport trip
         </p>
       </div>
     </div>
+
+    <div className="p-6">
+      <p className="text-sm font-bold text-gray-500 mb-3">
+        ROUTE
+      </p>
+
+      <div className="bg-gray-50 rounded-xl p-4 mb-5">
+        Jamshedpur ↔ Ranchi Airport
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-gray-50 p-5 rounded-xl">
+          <p className="text-gray-500 text-sm">
+            Local Cab
+          </p>
+          <p className="text-2xl font-bold">
+            ₹1700+
+          </p>
+          <p className="text-xs text-gray-500 mt-1">
+    Toll and parking extra
+  </p>
+        </div>
+
+        <div className="bg-green-700 p-5 rounded-xl border border-green-800">
+          <p className="text-white text-sm font-semibold">
+            Kyro Mobility
+          </p>
+          <p className="text-2xl font-bold text-white">
+            ₹1500
+          </p>
+           <p className="text-xs text-green-100 mt-1">
+    Including toll and parking
+  </p>
+        </div>
+      </div>
+
+      <p className="text-gray-500 text-sm mt-5">
+        Customers can later check their total trips and savings using their phone number.
+      </p>
+    </div>
   </div>
 </section>
-        <section className="grid md:grid-cols-2 gap-12 items-center py-20">
-          <div>
-            <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-8">
-              ● Premium Airport Transfers from Jamshedpur
-            </div>
-
-            <h1 className="text-6xl md:text-7xl font-extrabold leading-tight">
-              Travel Smart <br />
-              <span className="text-green-700">
-                Save More.
-              </span>
-            </h1>
-
-            <p className="text-xl text-gray-600 mt-8 leading-relaxed max-w-xl">
-              Book reliable airport transfers from Jamshedpur to Ranchi Airport
-              and Kolkata Airport with transparent pricing, comfortable vehicles
-              and professional service.
-            </p>
-
-            <div className="flex flex-wrap gap-4 mt-10">
-              <Link
-                href="/book"
-                className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
-              >
-                Schedule Booking 🚕
-              </Link>
-
-              <a
-                href="https://wa.me/919279167887"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white border border-gray-300 px-8 py-4 rounded-xl font-bold shadow"
-              >
-                WhatsApp Now
-              </a>
-            </div>
-
-            <div className="flex flex-wrap gap-6 mt-10 text-sm font-bold text-gray-600">
-              <span>✈ Airport Specialists</span>
-              <span>💰 Fixed Pricing</span>
-              <span>🚗 Comfortable Vehicles</span>
-            </div>
-          </div>
-
-          {/* RIGHT CARD */}
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <div className="bg-green-50 p-6 border-b">
-              <p className="text-sm font-bold text-green-700">
-                EST. SAVINGS
-              </p>
-
-              <div className="flex justify-between items-end mt-2">
-                <h2 className="text-4xl font-extrabold text-green-700">
-                  ₹200+
-                </h2>
-                <p className="text-sm text-gray-500">
-                  Per Ranchi airport trip
-                </p>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <p className="text-sm font-bold text-gray-500 mb-3">
-                ROUTE
-              </p>
-
-              <div className="bg-[#f7f8f2] rounded-xl p-4 mb-5">
-                Jamshedpur ↔ Ranchi Airport
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 p-5 rounded-xl">
-                  <p className="text-gray-500 text-sm">Local Cab</p>
-                  <p className="text-2xl font-bold">₹1700+</p>
-                </div>
-
-                <div className="bg-green-50 p-5 rounded-xl">
-                  <p className="text-gray-500 text-sm">Kyro Mobility</p>
-                  <p className="text-2xl font-bold text-green-700">₹1500</p>
-                </div>
-              </div>
-
-              <p className="text-gray-500 text-sm mt-5">
-                Customers can later check their total trips and savings using
-                their phone number.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
 
       {/* SERVICES */}
       <section id="services" className="bg-white py-16">
@@ -225,8 +238,8 @@ export default function Home() {
   <div className="max-w-7xl mx-auto px-6">
     <div className="text-center mb-12">
       <h2 className="text-5xl font-extrabold">
-        Small Savings.{" "}
-        <span className="text-green-700">Big Difference.</span>
+        <span className="text-green-700">Small Savings.</span>{" "}
+        <span className="bg-[#f7f8f2]">Big Difference.</span>
       </h2>
 
       <p className="text-gray-600 text-lg mt-4 max-w-2xl mx-auto">
@@ -243,7 +256,7 @@ export default function Home() {
           1 Airport Trip
         </h3>
 
-        <p className="text-green-700 font-semibold mt-2">
+        <p className=" font-semibold mt-2">
           Save on every ride
         </p>
 
@@ -260,7 +273,7 @@ export default function Home() {
           5 Regular Trips
         </h3>
 
-        <p className="text-green-700 font-semibold mt-2">
+        <p className="font-semibold mt-2">
           Bigger monthly savings
         </p>
 
@@ -277,7 +290,7 @@ export default function Home() {
           Better Travel Experience
         </h3>
 
-        <p className="text-green-700 font-semibold mt-2">
+        <p className="font-semibold mt-2">
           Value beyond price
         </p>
 
@@ -319,8 +332,8 @@ export default function Home() {
           </div>
 
           <div className="bg-white/10 rounded-2xl p-6">
-            <p className="text-3xl font-extrabold">₹1500/3000</p>
-            <p className="mt-2 text-green-50">Transparent pricing approach</p>
+            <p className="text-3xl font-extrabold">0</p>
+            <p className="mt-2 text-green-50">Hidden Charges</p>
           </div>
 
           <div className="bg-white/10 rounded-2xl p-6">
@@ -363,15 +376,16 @@ export default function Home() {
       </section>
 
       {/* FLOATING WHATSAPP */}
+            {/* FLOATING WHATSAPP */}
       <a
-  href="https://wa.me/919279167887"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="fixed bottom-6 right-6 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
->
-  <FaWhatsapp size={34} />
-</a>
-      
-    </main>
-  );
+        href="https://wa.me/919279167887"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
+      >
+        <FaWhatsapp size={34} />
+      </a>
+    </div>
+  </main>
+);
 }

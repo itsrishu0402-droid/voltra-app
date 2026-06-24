@@ -35,10 +35,10 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f8f2] flex items-center justify-center px-6">
+    <main className="min-h-screen bg-[#f4f7fb] flex items-center justify-center px-6">
       <div className="bg-white max-w-xl w-full rounded-3xl shadow-xl p-10 border">
         <div className="text-center">
-          <Link href="/" className="text-green-700 font-bold">
+          <Link href="/" className="bg-[#f7f8f2] font-bold">
             ← Back to Home
           </Link>
 
@@ -49,7 +49,7 @@ export default function LoginPage() {
           </div>
 
           <h1 className="text-4xl font-extrabold mt-6 text-gray-900">
-            Welcome to <span className="text-green-700">Kyro Mobility</span>
+            Welcome to <span className="bg-[#f7f8f2]">Kyro Mobility</span>
           </h1>
 
           <p className="text-gray-500 mt-3 text-lg">
@@ -98,7 +98,7 @@ export default function LoginPage() {
           </button>
 
           {message && (
-            <p className="mt-6 text-green-700 font-semibold text-center">
+            <p className="mt-6 bg-[#f7f8f2] font-semibold text-center">
               {message}
             </p>
           )}

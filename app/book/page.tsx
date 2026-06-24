@@ -61,22 +61,22 @@ export default function BookPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f8f2] text-black">
+    <main className="min-h-screen bg-[#f4f7fb] text-black">
       <div className="max-w-7xl mx-auto px-6 py-6">
         {/* NAVBAR */}
         <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
             <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
-              V
+              K
             </div>
-            <span className="text-2xl font-bold text-green-700">
+            <span className="text-2xl font-bold bg-[#f7f8f2]">
               Kyro Mobility
             </span>
           </Link>
 
           <Link
             href="/"
-            className="text-green-700 font-bold"
+            className="bg-[#f7f8f2] font-bold"
           >
             ← Back Home
           </Link>
@@ -84,12 +84,12 @@ export default function BookPage() {
 
         {/* HEADER */}
         <section className="text-center py-12">
-          <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-6">
+          <div className="inline-block bg-[#ede9fe] text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-6">
             ● Airport Pickup & Drop Booking
           </div>
 
           <h1 className="text-5xl md:text-6xl font-extrabold">
-            Book Your <span className="text-green-700">Airport Transfer</span>
+            Book Your <span className="bg-[#f7f8f2]">Airport Transfer</span>
           </h1>
 
           <p className="text-gray-600 text-lg mt-5 max-w-2xl mx-auto">
@@ -107,14 +107,14 @@ export default function BookPage() {
               </h2>
 
               <div className="space-y-4">
-                <div className="bg-[#f7f8f2] p-4 rounded-xl">
+                <div className="bg-[#f4f7fb] p-4 rounded-xl">
                   <p className="font-bold">Jamshedpur ↔ Ranchi Airport</p>
                   <p className="text-gray-500 text-sm mt-1">
                     Pickup and drop available.
                   </p>
                 </div>
 
-                <div className="bg-[#f7f8f2] p-4 rounded-xl">
+                <div className="bg-[#f4f7fb] p-4 rounded-xl">
                   <p className="font-bold">Jamshedpur ↔ Kolkata Airport</p>
                   <p className="text-gray-500 text-sm mt-1">
                     Pickup and drop available.
@@ -150,7 +150,7 @@ export default function BookPage() {
                 href="https://wa.me/919279167887"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 bg-white text-green-700 px-5 py-3 rounded-xl font-bold"
+                className="mt-5 inline-flex items-center gap-2 bg-white bg-[#f7f8f2] px-5 py-3 rounded-xl font-bold"
               >
                 <FaWhatsapp />
                 WhatsApp Now
@@ -267,7 +267,7 @@ export default function BookPage() {
               </div>
             </div>
 
-            <div className="bg-green-50 border border-green-100 rounded-2xl p-5 mt-8">
+            <div className="text-green-700 border border-green-100 rounded-2xl p-5 mt-8">
               <h3 className="font-bold text-green-800">
                 Booking Note
               </h3>
@@ -299,21 +299,21 @@ export default function BookPage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white rounded-2xl p-6 shadow text-center">
-              <h3 className="text-xl font-bold text-green-700">1. Submit</h3>
+              <h3 className="text-xl font-bold bg-[#f7f8f2]">1. Submit</h3>
               <p className="text-gray-600 mt-3">
                 Fill your trip details and submit the booking request.
               </p>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow text-center">
-              <h3 className="text-xl font-bold text-green-700">2. Confirm</h3>
+              <h3 className="text-xl font-bold bg-[#f7f8f2]">2. Confirm</h3>
               <p className="text-gray-600 mt-3">
                 Our team confirms fare, timing and vehicle availability.
               </p>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow text-center">
-              <h3 className="text-xl font-bold text-green-700">3. Travel</h3>
+              <h3 className="text-xl font-bold bg-[#f7f8f2]">3. Travel</h3>
               <p className="text-gray-600 mt-3">
                 Enjoy a comfortable airport transfer with Kyro Mobility.
               </p>
@@ -327,7 +327,7 @@ export default function BookPage() {
         href="https://wa.me/919279167887"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
+        className="fixed bottom-6 right-6 bg-green-700 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
       >
         <FaWhatsapp size={34} />
       </a>
