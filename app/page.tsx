@@ -38,61 +38,69 @@ export default function Home() {
 </nav>
 
         {/* HERO */}
-        <section id="services" className="bg-white rounded-3xl shadow-sm py-16 px-8 mt-6">
-  <div className="max-w-7xl mx-auto px-6">
-    <h2 className="text-3xl sm:text-5xl font-extrabold mb-8">
+        <section id="services" className="py-12 sm:py-16">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <h2 className="text-3xl sm:text-5xl font-extrabold mb-8 text-center sm:text-left">
       Our Services
     </h2>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
-    <h3 className="text-xl font-bold">
-      ✈ Airport Transfers
-    </h3>
-    <p className="text-gray-600 mt-3">
-      Jamshedpur to Ranchi Airport and Kolkata Airport pickup & drop.
-    </p>
-    <p className="text-sm font-bold text-green-500 mt-4">
-      Available Now
-    </p>
-  </div>
+      <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+        <h3 className="text-xl sm:text-2xl font-bold leading-snug">
+          ✈ Airport Transfers
+        </h3>
 
-  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
-    <h3 className="text-xl font-bold">
-      🚗 Outstation Trips
-    </h3>
-    <p className="text-gray-600 mt-3">
-      Comfortable rides for nearby cities and planned long-distance trips.
-    </p>
-    <p className="text-sm font-bold text-green-700 mt-4">
-      On Request
-    </p>
-  </div>
+        <p className="text-gray-600 text-base sm:text-lg mt-3 leading-relaxed">
+          Jamshedpur to Ranchi Airport and Kolkata Airport pickup & drop.
+        </p>
 
-  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
-    <h3 className="text-xl font-bold">
-      🏨 Hotel Guest Travel
-    </h3>
-    <p className="text-gray-600 mt-3">
-      Reliable cab support for hotel guests, airport pickup and local travel.
-    </p>
-    <p className="text-sm font-bold text-green-700 mt-4">
-      On Request
-    </p>
-  </div>
+        <p className="text-sm font-bold text-green-700 mt-4">
+          Available Now
+        </p>
+      </div>
 
-  <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
-    <h3 className="text-xl font-bold">
-      🧳 Corporate Travel
-    </h3>
-    <p className="text-gray-600 mt-3">
-      Professional travel support for business visitors and company guests.
-    </p>
-    <p className="text-sm font-bold text-gray-500 mt-4">
-      Coming Soon
-    </p>
-  </div>
-</div>
+      <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+        <h3 className="text-xl sm:text-2xl font-bold leading-snug">
+          🚗 Outstation Trips
+        </h3>
+
+        <p className="text-gray-600 text-base sm:text-lg mt-3 leading-relaxed">
+          Comfortable rides for nearby cities and planned long-distance trips.
+        </p>
+
+        <p className="text-sm font-bold text-green-500 mt-4">
+          On Request
+        </p>
+      </div>
+
+      <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+        <h3 className="text-xl sm:text-2xl font-bold leading-snug">
+          🏨 Hotel Guest Travel
+        </h3>
+
+        <p className="text-gray-600 text-base sm:text-lg mt-3 leading-relaxed">
+          Reliable cab support for hotel guests, airport pickup and local travel.
+        </p>
+
+        <p className="text-sm font-bold text-green-500 mt-4">
+          On Request
+        </p>
+      </div>
+
+      <div className="bg-[#f7f8f2] border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+        <h3 className="text-xl sm:text-2xl font-bold leading-snug">
+          🧳 Corporate Travel
+        </h3>
+
+        <p className="text-gray-600 text-base sm:text-lg mt-3 leading-relaxed">
+          Professional travel support for business visitors and company guests.
+        </p>
+
+        <p className="text-sm font-bold text-gray-500 mt-4">
+          Coming Soon
+        </p>
+      </div>
+    </div>
   </div>
 </section>
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-10 sm:py-16">
@@ -306,43 +314,49 @@ export default function Home() {
     </div>
   </div>
 </section>
-<section className="pb-20">
-  <div className="max-w-7xl mx-auto px-6">
-    <div className="bg-green-700 text-white rounded-3xl p-10 md:p-14 shadow-lg">
-      <div className="grid md:grid-cols-2 gap-10 items-center">
+<section className="py-10 sm:py-16">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <div className="bg-green-700 text-white rounded-3xl p-6 sm:p-10 md:p-14 shadow-lg">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
         <div>
-          <h2 className="text-4xl md:text-5xl font-extrabold leading-tight">
-            Travel Smarter with
-            <br />
-            Kyro Mobility
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+            Travel Smarter with Kyro Mobility
           </h2>
 
-          <p className="mt-5 text-green-50 text-lg leading-relaxed">
+          <p className="mt-5 text-green-50 text-base sm:text-lg leading-relaxed">
             From airport transfers to outstation and hotel travel support,
             Kyro Mobility focuses on reliable service, comfortable rides and
             better value for every customer.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white/10 rounded-2xl p-6">
-            <p className="text-3xl font-extrabold">24/7</p>
-            <p className="mt-2 text-green-50">Booking support</p>
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <div className="bg-white/10 rounded-2xl p-4 sm:p-6">
+            <p className="text-2xl sm:text-3xl font-extrabold">24/7</p>
+            <p className="mt-2 text-green-50 text-sm sm:text-base">
+              Booking support
+            </p>
           </div>
 
-          <div className="bg-white/10 rounded-2xl p-6">
-            <p className="text-3xl font-extrabold">2+</p>
-            <p className="mt-2 text-green-50">Primary routes available</p>
+          <div className="bg-white/10 rounded-2xl p-4 sm:p-6">
+            <p className="text-2xl sm:text-3xl font-extrabold">2+</p>
+            <p className="mt-2 text-green-50 text-sm sm:text-base">
+              Primary routes
+            </p>
           </div>
 
-          <div className="bg-white/10 rounded-2xl p-6">
-            <p className="text-3xl font-extrabold">0</p>
-            <p className="mt-2 text-green-50">Hidden Charges</p>
+          <div className="bg-white/10 rounded-2xl p-4 sm:p-6">
+            <p className="text-2xl sm:text-3xl font-extrabold">₹</p>
+            <p className="mt-2 text-green-50 text-sm sm:text-base">
+              Clear pricing
+            </p>
           </div>
 
-          <div className="bg-white/10 rounded-2xl p-6">
-            <p className="text-3xl font-extrabold">100%</p>
-            <p className="mt-2 text-green-50">Customer-focused service</p>
+          <div className="bg-white/10 rounded-2xl p-4 sm:p-6">
+            <p className="text-2xl sm:text-3xl font-extrabold">100%</p>
+            <p className="mt-2 text-green-50 text-sm sm:text-base">
+              Customer focus
+            </p>
           </div>
         </div>
       </div>
@@ -385,9 +399,9 @@ export default function Home() {
         href="https://wa.me/919279167887"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 bg-green-600 text-white w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
+        className="fixed bottom-5 right-5 bg-green-600 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-50"
       >
-        <FaWhatsapp size={28} />
+        <FaWhatsapp size={26} />
       </a>
     </div>
   </main>
