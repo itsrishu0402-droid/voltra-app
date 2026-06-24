@@ -44,12 +44,12 @@ export default function LoginPage() {
 
           <div className="mt-8 flex justify-center">
             <div className="bg-green-700 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl font-extrabold">
-              V
+              K
             </div>
           </div>
 
           <h1 className="text-4xl font-extrabold mt-6 text-gray-900">
-            Welcome to <span className="text-green-700">Voltra</span>
+            Welcome to <span className="text-green-700">Kyro Mobility</span>
           </h1>
 
           <p className="text-gray-500 mt-3 text-lg">

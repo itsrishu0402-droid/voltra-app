@@ -10,10 +10,10 @@ export default function Home() {
         <nav className="flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4 mt-6">
           <div className="flex items-center gap-2">
             <div className="bg-green-600 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
-              V
+              K
             </div>
             <span className="text-2xl font-bold text-green-700">
-              Voltra
+              Kyro Mobility
             </span>
           </div>
 
@@ -34,6 +34,63 @@ export default function Home() {
         </nav>
 
         {/* HERO */}
+        <section id="services" className="bg-white py-16">
+  <div className="max-w-7xl mx-auto px-6">
+    <h2 className="text-3xl font-extrabold mb-8">
+      Our Services
+    </h2>
+
+    <div className="grid md:grid-cols-4 gap-6">
+      <div className="border rounded-2xl p-6 shadow-sm">
+        <h3 className="text-xl font-bold text-green-700">
+          ✈ Airport Transfers
+        </h3>
+        <p className="text-gray-600 mt-3">
+          Jamshedpur to Ranchi Airport and Kolkata Airport pickup & drop.
+        </p>
+        <p className="text-sm font-bold text-green-700 mt-4">
+          Available Now
+        </p>
+      </div>
+
+      <div className="border rounded-2xl p-6 shadow-sm">
+        <h3 className="text-xl font-bold text-green-700">
+          🚗 Outstation Trips
+        </h3>
+        <p className="text-gray-600 mt-3">
+          Comfortable rides for nearby cities and planned long-distance trips.
+        </p>
+        <p className="text-sm font-bold text-gray-500 mt-4">
+          On Request
+        </p>
+      </div>
+
+      <div className="border rounded-2xl p-6 shadow-sm">
+        <h3 className="text-xl font-bold text-green-700">
+          🏨 Hotel Guest Travel
+        </h3>
+        <p className="text-gray-600 mt-3">
+          Reliable cab support for hotel guests, airport pickup and local travel.
+        </p>
+        <p className="text-sm font-bold text-gray-500 mt-4">
+          On Request
+        </p>
+      </div>
+
+      <div className="border rounded-2xl p-6 shadow-sm">
+        <h3 className="text-xl font-bold text-green-700">
+          🧳 Corporate Travel
+        </h3>
+        <p className="text-gray-600 mt-3">
+          Professional travel support for business visitors and company guests.
+        </p>
+        <p className="text-sm font-bold text-gray-500 mt-4">
+          Coming Soon
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
         <section className="grid md:grid-cols-2 gap-12 items-center py-20">
           <div>
             <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-8">
@@ -111,7 +168,7 @@ export default function Home() {
                 </div>
 
                 <div className="bg-green-50 p-5 rounded-xl">
-                  <p className="text-gray-500 text-sm">Voltra</p>
+                  <p className="text-gray-500 text-sm">Kyro Mobility</p>
                   <p className="text-2xl font-bold text-green-700">₹1600</p>
                 </div>
               </div>
@@ -129,7 +186,7 @@ export default function Home() {
       <section id="services" className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl font-extrabold mb-8">
-            Why Choose Voltra?
+            Why Choose Kyro Mobility?
           </h2>
 
           <div className="grid md:grid-cols-4 gap-6">
