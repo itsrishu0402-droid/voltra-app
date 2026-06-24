@@ -26,11 +26,11 @@ export default function Home() {
           </div>
 
           <Link
-            href="/book"
-            className="bg-green-700 text-white px-6 py-3 rounded-full font-bold shadow"
-          >
-            Book Ride 🚕
-          </Link>
+  href="/login"
+  className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
+>
+  Schedule Booking 🚕
+</Link>
         </nav>
 
         {/* HERO */}
