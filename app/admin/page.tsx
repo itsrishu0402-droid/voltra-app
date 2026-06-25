@@ -48,45 +48,81 @@ export default function AdminPage() {
   }
 
   function sendConfirmation(booking: any) {
-  const phoneNumber = formatPhone(booking.phone);
+    const phoneNumber = formatPhone(booking.phone);
 
-  const emoji = {
-    namaste: String.fromCodePoint(128591),
-    check: String.fromCodePoint(9989),
-    car: String.fromCodePoint(128664),
-    calendar: String.fromCodePoint(128197),
-    clock: String.fromCodePoint(9200),
-    pin: String.fromCodePoint(128205),
-    flag: String.fromCodePoint(127937),
-    taxi: String.fromCodePoint(128661),
-    sparkle: String.fromCodePoint(10024),
-  };
+    const emoji = {
+      namaste: String.fromCodePoint(128591),
+      check: String.fromCodePoint(9989),
+      car: String.fromCodePoint(128664),
+      calendar: String.fromCodePoint(128197),
+      clock: String.fromCodePoint(9200),
+      pin: String.fromCodePoint(128205),
+      flag: String.fromCodePoint(127937),
+      taxi: String.fromCodePoint(128661),
+      sparkle: String.fromCodePoint(10024),
+    };
 
-  const message = [
-    `Hello *${booking.name || "Customer"}*! ${emoji.namaste}`,
-    "",
-    `${emoji.check} *Your Kyro Mobility booking request has been received.*`,
-    "",
-    `${emoji.car} *Service:* ${booking.service_type || "Cab & Travel Service"}`,
-    `${emoji.calendar} *Travel Date:* ${booking.pickup_date || "-"}`,
-    `${emoji.clock} *Pickup Time:* ${booking.pickup_time || "-"}`,
-    `${emoji.pin} *Pickup:* ${booking.pickup || "-"}`,
-    `${emoji.flag} *Drop:* ${booking.destination || "-"}`,
-    "",
-    "Our team will shortly confirm the fare, vehicle and driver details with you.",
-    "",
-    "Thank you for choosing *Kyro Mobility*.",
-    "",
-    `*Travel Smart. Feel Privileged.* ${emoji.taxi}${emoji.sparkle}`,
-  ].join("\n");
+    const message = [
+      `Hello *${booking.name || "Customer"}*! ${emoji.namaste}`,
+      "",
+      `${emoji.check} *Your Kyro Mobility booking request has been received.*`,
+      "",
+      `${emoji.car} *Service:* ${booking.service_type || "Cab & Travel Service"}`,
+      `${emoji.calendar} *Travel Date:* ${booking.pickup_date || "-"}`,
+      `${emoji.clock} *Pickup Time:* ${booking.pickup_time || "-"}`,
+      `${emoji.pin} *Pickup:* ${booking.pickup || "-"}`,
+      `${emoji.flag} *Drop:* ${booking.destination || "-"}`,
+      "",
+      "Our team will shortly confirm the fare, vehicle and driver details with you.",
+      "",
+      "Thank you for choosing *Kyro Mobility*.",
+      "",
+      `*Travel Smart. Feel Privileged.* ${emoji.taxi}${emoji.sparkle}`,
+    ].join("\n");
 
-  const params = new URLSearchParams({
-    phone: phoneNumber,
-    text: message,
-  });
+    const params = new URLSearchParams({
+      phone: phoneNumber,
+      text: message,
+    });
 
-  window.open(`https://api.whatsapp.com/send?${params.toString()}`, "_blank");
-}
+    window.open(`https://api.whatsapp.com/send?${params.toString()}`, "_blank");
+  }
+
+  async function markRideCompleted(bookingId: number) {
+    try {
+      const response = await fetch("/api/admin/update-booking-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password,
+          bookingId,
+          status: "completed",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.error || "Unable to update ride status");
+        return;
+      }
+
+      setBookings((currentBookings) =>
+        currentBookings.map((booking) =>
+          booking.id === bookingId
+            ? { ...booking, trip_status: "completed" }
+            : booking
+        )
+      );
+
+      alert("Ride marked as completed.");
+    } catch (error) {
+      console.log("STATUS UPDATE ERROR:", error);
+      alert("Something went wrong while updating status.");
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#f7f8f2] text-black px-4 py-6">
@@ -127,10 +163,8 @@ export default function AdminPage() {
 
         {loggedIn && (
           <div className="space-y-5">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-extrabold">
-                Latest Bookings
-              </h2>
+            <div className="flex justify-between items-center gap-4">
+              <h2 className="text-2xl font-extrabold">Latest Bookings</h2>
 
               <button
                 onClick={loadBookings}
@@ -169,6 +203,24 @@ export default function AdminPage() {
                     <p className="text-gray-600">
                       Service: {booking.service_type || "-"}
                     </p>
+
+                    {booking.referral_code_used && (
+                      <div className="mt-3 bg-green-50 border border-green-200 rounded-xl p-3">
+                        <p className="text-sm font-bold text-green-700">
+                          Referral Code Used
+                        </p>
+
+                        <p className="text-lg font-extrabold tracking-wide text-gray-900">
+                          {booking.referral_code_used}
+                        </p>
+
+                        {booking.referrer_email && (
+                          <p className="text-sm text-gray-600 mt-1">
+                            Referred By: {booking.referrer_email}
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="md:text-right">
@@ -180,7 +232,13 @@ export default function AdminPage() {
                       Time: {booking.pickup_time || "-"}
                     </p>
 
-                    <p className="text-sm font-bold text-green-700 mt-2">
+                    <p
+                      className={`text-sm font-bold mt-2 ${
+                        booking.trip_status === "completed"
+                          ? "text-green-700"
+                          : "text-red-700"
+                      }`}
+                    >
                       Status: {booking.trip_status || "pending"}
                     </p>
                   </div>
@@ -209,12 +267,23 @@ export default function AdminPage() {
                   )}
                 </div>
 
-                <button
-                  onClick={() => sendConfirmation(booking)}
-                  className="mt-5 bg-green-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-800"
-                >
-                  Send WhatsApp Confirmation
-                </button>
+                <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => sendConfirmation(booking)}
+                    className="bg-green-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-800"
+                  >
+                    Send WhatsApp Confirmation
+                  </button>
+
+                  {booking.trip_status !== "completed" && (
+                    <button
+                      onClick={() => markRideCompleted(booking.id)}
+                      className="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-black"
+                    >
+                      Mark Ride Completed
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

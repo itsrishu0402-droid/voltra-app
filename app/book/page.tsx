@@ -14,15 +14,52 @@ export default function BookPage() {
   const [locationLink, setLocationLink] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [serviceType, setServiceType] = useState("Airport Transfer");
+  const [referralCode, setReferralCode] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [myReferralCode, setMyReferralCode] = useState("");
+  function generateReferralCode() {
+  const randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
+  return `KYRO${randomCode}`;
+}
   useEffect(() => {
   async function getLoggedInUser() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (user?.email) {
+    if (!user) {
+      return;
+    }
+
+    if (user.email) {
       setCustomerEmail(user.email);
+    }
+
+    const { data: existingProfile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (existingProfile?.referral_code) {
+      setMyReferralCode(existingProfile.referral_code);
+      return;
+    }
+
+    const newReferralCode = generateReferralCode();
+
+    const { data: newProfile, error } = await supabase
+      .from("profiles")
+      .insert({
+        id: user.id,
+        email: user.email,
+        referral_code: newReferralCode,
+      })
+      .select()
+      .single();
+
+    if (!error && newProfile?.referral_code) {
+      setMyReferralCode(newProfile.referral_code);
     }
   }
 
@@ -56,6 +93,7 @@ export default function BookPage() {
   name,
   phone,
   customer_email: customerEmail || null,
+  referral_code_used: referralCode || null,
   pickup,
   destination,
   pickup_date: pickupDate,
@@ -75,6 +113,7 @@ export default function BookPage() {
       setPickupDate("");
       setPickupTime("");
       setLocationLink("");
+      setReferralCode("");
       setServiceType("Airport Transfer");
     }
   }
@@ -193,6 +232,32 @@ export default function BookPage() {
             <p className="text-gray-600 mt-3">
               Fill the details below. Our team will contact you to confirm the trip.
             </p>
+            {myReferralCode && (
+  <div className="mt-8 bg-green-50 border border-green-200 rounded-2xl p-5">
+    <p className="text-sm font-semibold text-green-700">
+      Your Referral Code
+    </p>
+
+    <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <p className="text-2xl font-extrabold tracking-wider text-gray-900">
+        {myReferralCode}
+      </p>
+
+      <button
+        type="button"
+        onClick={() => navigator.clipboard.writeText(myReferralCode)}
+        className="bg-green-700 text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-green-800"
+      >
+        Copy Code
+      </button>
+    </div>
+
+    <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+      Share this code with your friends. They get referral benefits, and you get
+      rewards after their first completed ride.
+    </p>
+  </div>
+)}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mt-8">
   {/* FULL NAME */}
   <div>
@@ -317,6 +382,23 @@ export default function BookPage() {
       Customer can paste Google Maps location link here.
     </p>
   </div>
+  {/* REFERRAL CODE */}
+<div>
+  <label className="text-sm font-semibold text-gray-600">
+    Referral Code <span className="text-gray-400">(Optional)</span>
+  </label>
+
+  <input
+    value={referralCode}
+    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+    placeholder="Example: KYRO7A92X"
+    className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+  />
+
+  <p className="text-xs text-gray-400 mt-1">
+    Enter referral code if someone referred you.
+  </p>
+</div>
 </div>
             <div className="bg-green-50 border border-green-100 rounded-2xl p-5 mt-8">
               <h3 className="font-bold text-green-800">

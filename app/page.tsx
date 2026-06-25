@@ -7,34 +7,84 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* NAVBAR */}
-       <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white rounded-3xl sm:rounded-full shadow-md px-4 sm:px-8 py-4 mt-4 sm:mt-6 mb-8">
-  <Link
-    href="/"
-    className="flex items-center justify-center sm:justify-start gap-3"
-  >
-    <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
-      K
+       <nav className="mt-4 sm:mt-6 mb-8">
+  {/* Mobile Navbar */}
+  <div className="sm:hidden bg-white rounded-[28px] shadow-xl border border-gray-100 p-4">
+    <div className="flex items-center gap-3">
+      <Link href="/" className="flex items-center gap-3">
+        <div className="bg-green-700 text-white font-extrabold w-12 h-12 rounded-full flex items-center justify-center shadow-md">
+          K
+        </div>
+
+        <div>
+          <h1 className="text-xl font-extrabold text-gray-900 leading-tight">
+            Kyro Mobility
+          </h1>
+          <p className="text-xs text-gray-500 font-medium">
+            Premium rides, privileged experience
+          </p>
+        </div>
+      </Link>
     </div>
 
-    <span className="text-xl sm:text-2xl font-bold text-green-700 whitespace-nowrap">
-      Kyro Mobility
-    </span>
-  </Link>
+    <div className="mt-4 bg-[#f7f8f2] rounded-2xl p-4 border border-gray-100">
+      <p className="text-sm font-bold text-gray-900">
+        Airport Transfers Available
+      </p>
+      <p className="text-xs text-gray-500 mt-1">
+        Jamshedpur ↔ Ranchi Airport / Kolkata Airport
+      </p>
+    </div>
 
-  <div className="hidden lg:flex gap-8 text-gray-700 font-medium">
-    <a href="#services">Services</a>
-    <a href="#routes">Routes</a>
-    <a href="#fleet">Fleet</a>
-    <a href="#savings">Savings</a>
-    <a href="#faqs">FAQs</a>
+    <div className="grid grid-cols-2 gap-3 mt-4">
+      <Link
+        href="/login"
+        className="bg-green-700 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-green-800 transition"
+      >
+        Book Now 🚕
+      </Link>
+
+      <a
+        href="https://wa.me/919279167887"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-gray-900 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-black transition"
+      >
+        WhatsApp 📲
+      </a>
+    </div>
   </div>
 
- <Link
-  href="/login"
-  className="w-full sm:w-auto text-center bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
->
-  Schedule Booking 🚕
-</Link>
+  {/* Desktop Navbar */}
+  <div className="hidden sm:flex items-center justify-between bg-white rounded-full shadow-md px-8 py-4">
+    <Link href="/" className="flex items-center gap-3">
+      <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
+        K
+      </div>
+
+      <span className="text-2xl font-bold text-green-700 whitespace-nowrap">
+        Kyro Mobility
+      </span>
+   <p className="text-xs text-gray-500 font-medium bold">
+  Premium rides, privileged experience
+</p>
+    </Link>
+
+    <div className="hidden lg:flex gap-8 text-gray-700 font-medium">
+      <a href="#services">Services</a>
+      <a href="#routes">Routes</a>
+      <a href="#fleet">Fleet</a>
+      <a href="#savings">Savings</a>
+      <a href="#faqs">FAQs</a>
+    </div>
+
+    <Link
+      href="/login"
+      className="bg-green-700 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:bg-green-800 transition"
+    >
+      Schedule Booking 🚕
+    </Link>
+  </div>
 </nav>
 
         {/* HERO */}
@@ -393,7 +443,100 @@ export default function Home() {
           </div>
         </div>
       </section>
+<section id="faqs" className="py-12 sm:py-16 bg-[#f7f8f2]">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <div className="text-center mb-10">
+      <h2 className="text-4xl sm:text-5xl font-extrabold tracking-wide">
+        FAQs
+      </h2>
+      <p className="text-gray-600 mt-4 text-base sm:text-lg">
+        Everything you need to know before booking your ride.
+      </p>
+    </div>
 
+    <div className="space-y-4">
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+          Which routes are currently available?
+          <span className="text-green-700 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+          Currently, Kyro Mobility provides airport transfer services from
+          Jamshedpur/Tata to Ranchi Airport and Kolkata Airport, including return
+          trips from these airports to Jamshedpur/Tata.
+        </div>
+      </details>
+
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+          How can I book a ride?
+          <span className="text-green-700 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+          You can book directly through our website booking form or contact us on
+          WhatsApp. After receiving your booking request, our team will confirm
+          the fare, vehicle and driver details.
+        </div>
+      </details>
+
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+          Do I need to pay for toll and parking?
+          <span className="text-green-700 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+          No, our pricing includes toll and parking charges.
+        </div>
+      </details>
+
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+          Will the pricing will change with fuel prices?
+          <span className="text-green-700 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+          No, our pricing is fixed and will not change with fuel price fluctuations. You can book your ride with confidence, knowing that the fare you see is the fare you pay.
+        </div>
+      </details>
+
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+          When will the driver details be shared?
+          <span className="text-green-700 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+          Driver and vehicle details will be shared after your booking is
+          confirmed. For airport transfers, details are usually shared before the
+          scheduled pickup time.
+        </div>
+      </details>
+
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+          Can I book for outstation or hotel guest travel?
+          <span className="text-green-700 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
+        <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+          Yes, outstation trips and hotel guest travel are available on request.
+          You can share your trip details and our team will confirm availability
+          and fare.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
       {/* FLOATING WHATSAPP */}
             {/* FLOATING WHATSAPP */}
       <a

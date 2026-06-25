@@ -1,67 +1,75 @@
-import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
+"use client";
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const password = body.password;
+import { useState } from "react";
 
-    if (!process.env.ADMIN_PASSWORD) {
-      return NextResponse.json(
-        { error: "ADMIN_PASSWORD missing in .env.local" },
-        { status: 500 }
-      );
-    }
+export default function AdminPage() {
+  const [password, setPassword] = useState("");
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-    if (password !== process.env.ADMIN_PASSWORD) {
-      return NextResponse.json(
-        { error: "Wrong admin password" },
-        { status: 401 }
-      );
-    }
+  async function loadBookings() {
+    try {
+      setLoading(true);
 
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      return NextResponse.json(
-        { error: "NEXT_PUBLIC_SUPABASE_URL missing in .env.local" },
-        { status: 500 }
-      );
-    }
-
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY missing in .env.local" },
-        { status: 500 }
-      );
-    }
-
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY,
-      {
-        auth: {
-          persistSession: false,
+      const response = await fetch("/api/admin/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ password }),
+      });
+
+      const result: any = await response.json();
+
+      if (!response.ok) {
+        alert(result.error || "Unable to load bookings");
+        return;
       }
-    );
 
-    const { data, error } = await supabaseAdmin
-      .from("bookings")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
+      setBookings(result.bookings || []);
+      setLoggedIn(true);
+    } catch (error) {
+      console.log("ADMIN ERROR:", error);
+      alert("Something went wrong. Check VS Code terminal for error.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
+  function formatPhone(phone: string) {
+    const cleaned = String(phone || "").replace(/\D/g, "");
+
+    if (cleaned.length === 10) {
+      return `91${cleaned}`;
     }
 
-    return NextResponse.json({ bookings: data || [] });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Server error" },
-      { status: 500 }
-    );
+    return cleaned;
   }
-}
+
+  function sendConfirmation(booking: any) {
+    const phoneNumber = formatPhone(booking.phone);
+
+    const message = `Hello *${booking.name || "Customer"}*! 🙏
+
+✅ *Your Kyro Mobility booking request has been received.*
+
+🚘 *Service:* ${booking.service_type || "Cab & Travel Service"}
+📅 *Travel Date:* ${booking.pickup_date || "-"}
+⏰ *Pickup Time:* ${booking.pickup_time || "-"}
+📍 *Pickup:* ${booking.pickup || "-"}
+🏁 *Drop:* ${booking.destination || "-"}
+
+Our team will shortly confirm the fare, vehicle and driver details with you.
+
+Thank you for choosing *Kyro Mobility*.
+*Travel Smart. Feel Privileged.* 🚕✨`;
+
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(whatsappUrl, "_blank");
+  }
+
+  
