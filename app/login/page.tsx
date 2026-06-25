@@ -9,30 +9,29 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function sendMagicLink() {
-    if (!email.includes("@")) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-   const { error } = await supabase.auth.signInWithOtp({
-  email,
-  options: {
-    emailRedirectTo: `${window.location.origin}/book`,
-  },
-});
-
-    setLoading(false);
-
-    if (error) {
-      alert(error.message);
-    } else {
-      setMessage("Magic link sent! Please check your email.");
-    }
+  async function signInWithEmail() {
+  if (!email) {
+    alert("Please enter your email.");
+    return;
   }
+
+  const redirectUrl = `${window.location.origin}/book`;
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: redirectUrl,
+      shouldCreateUser: true,
+    },
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  setMessage("Magic link sent! Please check your email.");
+}
 
   return (
     <main className="min-h-screen bg-[#f4f7fb] flex items-center justify-center px-6">
@@ -90,7 +89,7 @@ export default function LoginPage() {
           />
 
           <button
-            onClick={sendMagicLink}
+            onClick={signInWithEmail}
             disabled={loading}
             className="w-full mt-6 bg-green-700 text-white py-4 rounded-xl text-lg font-bold hover:bg-green-800 disabled:bg-gray-400"
           >
