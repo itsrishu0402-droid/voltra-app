@@ -137,21 +137,56 @@ const isOwnReferralCode =
     <main className="min-h-screen bg-[#f7f8f2] text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* NAVBAR */}
-        <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white rounded-3xl sm:rounded-full shadow-md px-4 sm:px-8 py-4 mb-8">
-          <Link href="/" className="flex items-center justify-center sm:justify-start gap-3">
-            <div className="bg-green-700 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center">
-              K
-            </div>
+        <div className="max-w-md mx-auto mb-10 bg-white rounded-[28px] border border-gray-100 p-5 shadow-xl">
+  <div className="flex items-center gap-4">
+    <Link href="/" className="flex items-center gap-4">
+      <div className="w-14 h-14 rounded-full bg-green-700 text-white flex items-center justify-center font-extrabold shadow-md">
+        K
+      </div>
 
-            <span className="text-xl sm:text-2xl font-bold text-green-700 whitespace-nowrap">
-              Kyro Mobility
-            </span>
-          </Link>
+      <div>
+        <h1 className="text-xl font-extrabold text-green-700 leading-tight">
+          Kyro Mobility
+        </h1>
 
-          <Link href="/" className="text-center text-green-700 font-bold">
-            ← Back Home
-          </Link>
-        </nav>
+        <p className="text-xs text-gray-500 font-medium">
+          Premium rides, privileged experience
+        </p>
+      </div>
+    </Link>
+  </div>
+
+  {customerEmail && (
+    <div className="mt-4 bg-green-50 border border-green-100 rounded-2xl p-3">
+      <p className="text-xs text-gray-500 font-semibold">
+        Logged in as
+      </p>
+
+      <p className="text-sm font-bold text-green-700 truncate">
+        {customerEmail}
+      </p>
+    </div>
+  )}
+
+  <div className="grid grid-cols-2 gap-3 mt-5">
+    <Link
+      href="/"
+      className="bg-green-700 text-white py-3 rounded-xl font-extrabold text-sm text-center shadow-md hover:bg-green-800 transition"
+    >
+      Back Home
+    </Link>
+
+    <a
+      href="https://wa.me/919279167887"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-gray-900 text-white py-3 rounded-xl font-extrabold text-sm shadow-md hover:bg-black transition flex items-center justify-center gap-2"
+    >
+      <FaWhatsapp className="text-green-400" size={16} />
+      WhatsApp
+    </a>
+  </div>
+</div>
 
         {/* HEADER */}
         <section className="text-center py-8 sm:py-12">
