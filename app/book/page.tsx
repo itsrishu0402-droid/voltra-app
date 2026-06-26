@@ -263,7 +263,7 @@ const isOwnReferralCode =
 
       <ul className="mt-4 space-y-2 text-sm text-gray-600">
         <li>• Comfortable for small groups</li>
-        <li>• Eco-friendly EV ride</li>
+        <li>• Eco-friendly ride</li>
         <li>• Suitable for Ranchi airport transfers</li>
       </ul>
     </div>

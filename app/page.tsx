@@ -61,32 +61,26 @@ async function logoutCustomer() {
       </Link>
     </div>
 
-    <div className="mt-4 bg-[#f7f8f2] rounded-2xl p-4 border border-gray-100">
-      <p className="text-sm font-bold text-gray-900">
-        Airport Transfers Available
-      </p>
-      <p className="text-xs text-gray-500 mt-1">
-        Jamshedpur ↔ Ranchi Airport / Kolkata Airport
-      </p>
-    </div>
+     
 
-    <div className="grid grid-cols-2 gap-3 mt-4">
-      <Link
-  href={customerEmail ? "/book" : "/login"}
-  className="..."
+    <div className="grid grid-cols-2 gap-3 mt-5">
+  <Link
+    href={customerEmail ? "/book" : "/login"}
+    className="bg-green-700 text-white py-3 rounded-xl font-extrabold text-sm text-center shadow-md hover:bg-green-800 transition"
+  >
+    Book Now
+  </Link>
+
+  <a
+  href="https://wa.me/919279167887"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-gray-900 text-white py-3 rounded-xl font-extrabold text-sm shadow-md hover:bg-black transition flex items-center justify-center gap-2"
 >
-  {customerEmail ? "Book Now" : "Login to Book"}
-</Link>
-
-      <a
-        href="https://wa.me/919279167887"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-gray-900 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-black transition"
-      >
-        WhatsApp 📲
-      </a>
-    </div>
+  <FaWhatsapp className="text-green-400" size={16} />
+  WhatsApp
+</a>
+</div>
   </div>
 
   {/* Desktop Navbar */}
