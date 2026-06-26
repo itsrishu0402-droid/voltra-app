@@ -249,6 +249,7 @@ async function logoutCustomer() {
     rel="noopener noreferrer"
     className="bg-gray-900 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-black transition"
   >
+    <FaWhatsapp className="text-green-400 inline-block mr-2" size={16} />
     WhatsApp
   </a>
 </div>
