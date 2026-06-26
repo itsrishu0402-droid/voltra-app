@@ -15,7 +15,7 @@ export default function LoginPage() {
     return;
   }
 
-  const redirectUrl = `${window.location.origin}/book`;
+  const redirectUrl = `${window.location.origin}/`;
 
   const { error } = await supabase.auth.signInWithOtp({
     email,

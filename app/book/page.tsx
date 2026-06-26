@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { FaWhatsapp } from "react-icons/fa";
 
 export default function BookPage() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [pickup, setPickup] = useState("");
@@ -21,15 +23,24 @@ export default function BookPage() {
   const randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
   return `KYRO${randomCode}`;
 }
+const isOwnReferralCode =
+  referralCode.trim() !== "" &&
+  myReferralCode.trim() !== "" &&
+  referralCode.trim().toUpperCase() === myReferralCode.trim().toUpperCase();
   useEffect(() => {
   async function getLoggedInUser() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+    if (!user) {
+  router.push("/login");
+  return;
+}
 
     if (!user) {
-      return;
-    }
+  router.push("/login");
+  return;
+}
 
     if (user.email) {
       setCustomerEmail(user.email);
@@ -64,7 +75,7 @@ export default function BookPage() {
   }
 
   getLoggedInUser();
-}, []);
+}, [router]);
 
   const isFormValid =
     name.trim().length >= 2 &&
@@ -76,6 +87,10 @@ export default function BookPage() {
     pickupTime !== "";
 
   async function submitBooking() {
+    if (isOwnReferralCode) {
+  alert("You cannot use your own referral code. Please choose a different referral code or remove it.");
+  return;
+}
     if (!isFormValid) {
       alert("Please fill all details correctly.");
       return;
@@ -141,7 +156,7 @@ export default function BookPage() {
         {/* HEADER */}
         <section className="text-center py-8 sm:py-12">
           <div className="inline-block bg-green-100 text-green-800 px-5 py-2 rounded-full text-sm font-bold mb-5">
-            ● Cab & Travel Service Booking
+            ● Welcome in the journey of feeling safe and comfortable with Kyro Mobility
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
@@ -154,9 +169,9 @@ export default function BookPage() {
         </section>
 
         {/* MAIN BOOKING LAYOUT */}
-        <section className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
           {/* LEFT INFO BOXES */}
-          <div className="xl:col-span-1 flex flex-col gap-6">
+         <div className="lg:col-span-1 flex flex-col gap-6 order-2 lg:order-1">
             <div className="bg-white rounded-3xl shadow-md p-6">
               <h2 className="text-2xl font-extrabold mb-5">
                 Available Routes
@@ -197,29 +212,98 @@ export default function BookPage() {
               </div>
             </div>
 
-            <div className="bg-green-700 text-white rounded-3xl shadow-md p-6">
-              <h2 className="text-2xl font-extrabold">
-                Need Help?
-              </h2>
+            
+            {/* Need Help Box */}
+<div className="bg-green-700 text-white rounded-3xl shadow-md p-6">
+  <h2 className="text-2xl font-extrabold">
+    Need Help?
+  </h2>
 
-              <p className="mt-3 text-green-50 leading-relaxed">
-                You can also contact us directly on WhatsApp for instant booking support.
-              </p>
+  <p className="mt-3 text-green-50">
+    You can also contact us directly on WhatsApp for instant booking support.
+  </p>
 
-              <a
-                href="https://wa.me/919279167887"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center justify-center gap-2 bg-white text-green-700 px-5 py-3 rounded-xl font-bold shadow hover:bg-gray-100 w-full sm:w-auto"
-              >
-                <FaWhatsapp className="text-green-600" size={22} />
-                WhatsApp Now
-              </a>
-            </div>
+  <a
+    href="https://wa.me/919279167887"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-5 inline-flex items-center justify-center gap-2 bg-white text-green-700 px-5 py-3 rounded-xl font-bold shadow hover:bg-gray-100"
+  >
+    <FaWhatsapp className="text-green-600" size={22} />
+    WhatsApp Now
+  </a>
+</div>
+
+{/* Vehicle Suggestion Box */}
+<div className="bg-white rounded-3xl shadow-md p-6 border border-gray-100">
+  <h2 className="text-2xl font-extrabold text-gray-900">
+    Which Vehicle Suits You?
+  </h2>
+
+  <p className="mt-2 text-gray-600 leading-relaxed">
+    Choose the vehicle based on passenger count, luggage and travel comfort.
+  </p>
+
+  <div className="mt-5 space-y-4">
+    <div className="bg-[#f7f8f2] rounded-2xl p-5 border border-gray-200">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-xl font-extrabold text-green-700">
+          Tata Punch 
+        </h3>
+
+        <span className="text-xs font-bold bg-green-100 text-green-700 px-3 py-1 rounded-full">
+          Best Value
+        </span>
+      </div>
+
+      <p className="mt-3 text-gray-700 leading-relaxed">
+        Best for 1 to 3 passengers with light luggage. Ideal for airport pickup,
+        solo travellers, couples and small families.
+      </p>
+
+      <ul className="mt-4 space-y-2 text-sm text-gray-600">
+        <li>• Comfortable for small groups</li>
+        <li>• Eco-friendly EV ride</li>
+        <li>• Suitable for Ranchi airport transfers</li>
+      </ul>
+    </div>
+
+    <div className="bg-[#f7f8f2] rounded-2xl p-5 border border-gray-200">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-xl font-extrabold text-green-700">
+          Maruti Ertiga
+        </h3>
+
+        <span className="text-xs font-bold bg-gray-900 text-white px-3 py-1 rounded-full">
+          More Space
+        </span>
+      </div>
+
+      <p className="mt-3 text-gray-700 leading-relaxed">
+        Best for 4 to 6 passengers or customers carrying extra luggage. Ideal
+        for families, hotel guests and long-distance comfort.
+      </p>
+
+      <ul className="mt-4 space-y-2 text-sm text-gray-600">
+        <li>• More seating capacity</li>
+        <li>• Better luggage space</li>
+        <li>• Suitable for family and outstation trips</li>
+      </ul>
+    </div>
+  </div>
+
+  <div className="mt-5 bg-green-50 border border-green-100 rounded-2xl p-4">
+    <p className="text-sm text-gray-700 leading-relaxed">
+      Not sure which vehicle to choose? Submit your booking request or message us
+      on WhatsApp. Our team will suggest the best vehicle based on your trip.
+    </p>
+  </div>
+</div>
           </div>
 
+
           {/* RIGHT BOOKING FORM */}
-          <div className="xl:col-span-2 bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+          <div className="lg:col-span-2 bg-white rounded-3xl shadow-xl p-5 sm:p-6 lg:p-8 order-1 lg:order-2">
             <h2 className="text-3xl sm:text-4xl font-extrabold">
               Trip Details
               {customerEmail && (
@@ -383,6 +467,7 @@ export default function BookPage() {
     </p>
   </div>
   {/* REFERRAL CODE */}
+{/* REFERRAL CODE */}
 <div>
   <label className="text-sm font-semibold text-gray-600">
     Referral Code <span className="text-gray-400">(Optional)</span>
@@ -390,14 +475,27 @@ export default function BookPage() {
 
   <input
     value={referralCode}
-    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+    onChange={(e) =>
+      setReferralCode(e.target.value.trim().toUpperCase())
+    }
     placeholder="Example: KYRO7A92X"
-    className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
+    className={`w-full mt-2 p-4 rounded-xl border outline-none ${
+      isOwnReferralCode
+        ? "border-red-500 focus:border-red-600"
+        : "border-gray-300 focus:border-green-700"
+    }`}
   />
 
-  <p className="text-xs text-gray-400 mt-1">
-    Enter referral code if someone referred you.
-  </p>
+  {isOwnReferralCode ? (
+    <p className="text-sm text-red-600 font-semibold mt-2">
+      You cannot use your own referral code. Please choose a different referral
+      code or remove it.
+    </p>
+  ) : (
+    <p className="text-xs text-gray-400 mt-1">
+      Enter referral code if someone referred you.
+    </p>
+  )}
 </div>
 </div>
             <div className="bg-green-50 border border-green-100 rounded-2xl p-5 mt-8">
@@ -411,7 +509,7 @@ export default function BookPage() {
 
             <button
               onClick={submitBooking}
-              disabled={!isFormValid}
+              disabled={!isFormValid || isOwnReferralCode}
               className={`w-full mt-8 py-4 rounded-xl text-lg font-bold transition-all ${
                 isFormValid
                   ? "bg-green-700 text-white hover:bg-green-800"

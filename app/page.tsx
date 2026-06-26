@@ -1,7 +1,41 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 import { FaWhatsapp } from "react-icons/fa";
 
 export default function Home() {
+  const [customerEmail, setCustomerEmail] = useState("");
+
+useEffect(() => {
+  async function checkUser() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user?.email) {
+      setCustomerEmail(user.email);
+    }
+  }
+
+  checkUser();
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setCustomerEmail(session?.user?.email || "");
+  });
+
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
+
+async function logoutCustomer() {
+  await supabase.auth.signOut();
+  setCustomerEmail("");
+}
   return (
     <main className="min-h-screen bg-[#f4f7fb] text-black">
       <div className="max-w-7xl mx-auto px-6">
@@ -38,11 +72,11 @@ export default function Home() {
 
     <div className="grid grid-cols-2 gap-3 mt-4">
       <Link
-        href="/login"
-        className="bg-green-700 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-green-800 transition"
-      >
-        Book Now 🚕
-      </Link>
+  href={customerEmail ? "/book" : "/login"}
+  className="..."
+>
+  {customerEmail ? "Book Now" : "Login to Book"}
+</Link>
 
       <a
         href="https://wa.me/919279167887"
@@ -78,12 +112,37 @@ export default function Home() {
       <a href="#faqs">FAQs</a>
     </div>
 
+    {customerEmail ? (
+  <div className="flex items-center gap-4">
+    <div className="text-right">
+      <p className="text-xs text-gray-500 font-semibold">Logged in as</p>
+      <p className="text-sm font-bold text-green-700 max-w-[180px] truncate">
+        {customerEmail}
+      </p>
+    </div>
+
     <Link
-      href="/login"
-      className="bg-green-700 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:bg-green-800 transition"
+      href="/book"
+      className="bg-green-700 text-white px-7 py-3 rounded-full font-bold shadow-lg hover:bg-green-800 transition"
     >
-      Schedule Booking 🚕
+      Book Now
     </Link>
+
+    <button
+      onClick={logoutCustomer}
+      className="text-sm font-bold text-gray-500 hover:text-red-600"
+    >
+      Logout
+    </button>
+  </div>
+) : (
+  <Link
+    href="/login"
+    className="bg-green-700 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:bg-green-800 transition"
+  >
+    Login
+  </Link>
+)}
   </div>
 </nav>
 
@@ -173,23 +232,32 @@ export default function Home() {
       and professional service.
     </p>
 
-    <div className="flex flex-col sm:flex-row gap-4 mt-8 sm:mt-10">
-      <Link
-        href="/login"
-        className="bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg"
-      >
-        Schedule Booking 🚕
-      </Link>
+    {customerEmail && (
+  <div className="mt-4 bg-green-50 border border-green-100 rounded-2xl p-3">
+    <p className="text-xs text-gray-500 font-semibold">Logged in as</p>
+    <p className="text-sm font-bold text-green-700 truncate">
+      {customerEmail}
+    </p>
+  </div>
+)}
 
-      <a
-        href="https://wa.me/919279167887"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-white border border-gray-300 px-8 py-4 rounded-xl font-bold shadow"
-      >
-        WhatsApp Now
-      </a>
-    </div>
+<div className="grid grid-cols-2 gap-3 mt-4">
+  <Link
+    href={customerEmail ? "/book" : "/login"}
+    className="bg-green-700 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-green-800 transition"
+  >
+    {customerEmail ? "Book Now" : "Login"}
+  </Link>
+
+  <a
+    href="https://wa.me/919279167887"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-gray-900 text-white py-3 rounded-xl font-bold text-sm text-center shadow-md hover:bg-black transition"
+  >
+    WhatsApp
+  </a>
+</div>
 
     <div className="flex flex-wrap gap-6 mt-10 text-sm font-bold text-gray-600">
       <span>✈ Airport Specialists</span>
