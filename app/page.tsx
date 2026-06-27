@@ -167,7 +167,14 @@ export default function Home() {
   <FaWhatsapp className="text-green-400" size={16} />
   WhatsApp
 </a>
-</div>
+</div>{customerEmail && (
+  <button
+    onClick={logoutCustomer}
+    className="w-full mt-3 bg-red-600 text-white py-3 rounded-xl font-extrabold text-sm shadow-md hover:bg-red-700 transition"
+  >
+    Logout
+  </button>
+)}
   </div>
 
   {/* Desktop Navbar */}
