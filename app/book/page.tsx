@@ -45,11 +45,23 @@ async function verifyReferralCode() {
     return;
   }
 
+  if (!pickupDate) {
+    setReferralStatus("invalid");
+    setReferralMessage("Please select pickup date before verifying referral code.");
+    return;
+  }
+
   if (myReferralCode && code === myReferralCode.trim().toUpperCase()) {
     setReferralStatus("own");
     setReferralMessage(
       "You cannot use your own referral code. Please choose a different referral code."
     );
+    return;
+  }
+
+  if (!customerEmail) {
+    setReferralStatus("invalid");
+    setReferralMessage("Please login first to verify referral code.");
     return;
   }
 
@@ -62,20 +74,27 @@ async function verifyReferralCode() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ referralCode: code }),
+      body: JSON.stringify({
+        referralCode: code,
+        customerEmail,
+        pickupDate,
+      }),
     });
 
     const result = await response.json();
 
     if (!response.ok || !result.valid) {
       setReferralStatus("invalid");
-      setReferralMessage("Invalid referral code. Please check and try again.");
+      setReferralMessage(
+        result.message || "Invalid referral code. Please check and try again."
+      );
       return;
     }
 
     setReferralStatus("valid");
     setReferralMessage(
-      "Congratulations! You get ₹50 off on each of your next 2 rides."
+      result.message ||
+        `Congratulations! You get ₹50 off on each of your next ${result.remainingRides} ride(s).`
     );
   } catch (error) {
     console.log("REFERRAL VERIFY ERROR:", error);
@@ -83,7 +102,6 @@ async function verifyReferralCode() {
     setReferralMessage("Unable to verify referral code. Please try again.");
   }
 }
-
 useEffect(() => {
   async function getLoggedInUser() {
     const {
@@ -547,7 +565,14 @@ async function submitBooking() {
       type="date"
       value={pickupDate}
       min={new Date().toISOString().split("T")[0]}
-      onChange={(e) => setPickupDate(e.target.value)}
+      onChange={(e) => {
+  setPickupDate(e.target.value);
+
+  if (referralCode) {
+    setReferralStatus("idle");
+    setReferralMessage("Please verify referral code again after changing pickup date.");
+  }
+}}
       className="w-full mt-2 p-4 rounded-xl border border-gray-300 outline-none focus:border-green-700"
     />
   </div>

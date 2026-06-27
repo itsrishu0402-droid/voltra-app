@@ -121,7 +121,13 @@ export default function AdminPage() {
 
     if (result.referralReward?.referrerPhone) {
       const phoneNumber = formatPhone(result.referralReward.referrerPhone);
-
+const validTill = result.referralReward?.expiresAt
+  ? new Date(result.referralReward.expiresAt).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+  : "6 months";
       const message = `Hello! 🎉
 
 Good news from *Kyro Mobility*.
@@ -130,6 +136,8 @@ Your referral code *${result.referralReward.referralCode}* was used by a custome
 
 You have earned:
 *₹100 off on each of your next 2 rides.*
+
+Valid till: *${validTill}*
 
 Thank you for referring Kyro Mobility.
 

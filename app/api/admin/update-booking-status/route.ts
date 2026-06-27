@@ -58,9 +58,17 @@ export async function POST(request: Request) {
           .eq("referred_booking_id", bookingId)
           .maybeSingle();
 
-        if (!existingUsage) {
-          await supabaseAdmin.from("referral_usages").insert({
-            referral_code: referralCode,
+       if (!existingUsage) {
+  const rewardStartDate =
+    booking.pickup_date || new Date().toISOString().split("T")[0];
+
+  const rewardExpiryDate = new Date(`${rewardStartDate}T00:00:00`);
+  rewardExpiryDate.setMonth(rewardExpiryDate.getMonth() + 6);
+
+  const rewardExpiresAt = rewardExpiryDate.toISOString();
+
+  await supabaseAdmin.from("referral_usages").insert({
+    referral_code: referralCode,
             referrer_user_id: referrer.id,
             referred_booking_id: bookingId,
             referred_customer_name: booking.name || null,
@@ -69,6 +77,8 @@ export async function POST(request: Request) {
             reward_amount: 100,
             rides_remaining: 2,
             reward_given: true,
+             reward_expires_at: rewardExpiresAt,
+  referred_discount_expires_at: rewardExpiresAt.split("T")[0],
           });
 
           await supabaseAdmin.from("referral_rewards").insert({
@@ -79,6 +89,7 @@ export async function POST(request: Request) {
             status: "active",
             source_booking_id: bookingId,
             referral_code: referralCode,
+            expires_at: rewardExpiresAt,
           });
 
           referralReward = {
@@ -87,6 +98,7 @@ export async function POST(request: Request) {
             referralCode,
             rewardAmount: 100,
             ridesRemaining: 2,
+            expiresAt: rewardExpiresAt,
           };
         }
       }
