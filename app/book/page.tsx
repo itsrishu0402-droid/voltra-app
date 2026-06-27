@@ -86,8 +86,8 @@ async function verifyReferralCode() {
     if (!response.ok || !result.valid) {
       setReferralStatus("invalid");
       setReferralMessage(
-        result.message || "Invalid referral code. Please check and try again."
-      );
+  result.message || result.error || "Invalid referral code. Please check and try again."
+);
       return;
     }
 

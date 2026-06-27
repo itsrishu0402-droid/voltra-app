@@ -25,24 +25,21 @@ export async function POST(request: Request) {
 
     if (!referralCode) {
       return NextResponse.json(
-        { valid: false, error: "Referral code is required" },
+        { valid: false, message: "Referral code is required." },
         { status: 400 }
       );
     }
 
     if (!customerEmail) {
       return NextResponse.json(
-        { valid: false, error: "Customer email is required" },
+        { valid: false, message: "Customer email is required. Please login again." },
         { status: 400 }
       );
     }
 
     if (!pickupDate) {
       return NextResponse.json(
-        {
-          valid: false,
-          message: "Please select pickup date before verifying referral code.",
-        },
+        { valid: false, message: "Please select pickup date before verifying referral code." },
         { status: 400 }
       );
     }
@@ -57,23 +54,35 @@ export async function POST(request: Request) {
       }
     );
 
-    const { data: profile, error: profileError } = await supabaseAdmin
-  .from("profiles")
-  .select("id, email, referral_code")
-  .ilike("referral_code", referralCode)
-  .maybeSingle();
+    const { data: profiles, error: profileError } = await supabaseAdmin
+      .from("profiles")
+      .select("id, email, referral_code")
+      .ilike("referral_code", referralCode)
+      .limit(1);
 
     if (profileError) {
       return NextResponse.json(
-        { valid: false, error: profileError.message },
+        {
+          valid: false,
+          message: `Profile check failed: ${profileError.message}`,
+        },
         { status: 500 }
       );
     }
 
+    const profile = profiles?.[0];
+
     if (!profile) {
       return NextResponse.json({
         valid: false,
-        message: "Invalid referral code.",
+        message: `Referral code ${referralCode} was not found.`,
+      });
+    }
+
+    if (profile.email?.toLowerCase() === customerEmail) {
+      return NextResponse.json({
+        valid: false,
+        message: "You cannot use your own referral code.",
       });
     }
 
@@ -82,13 +91,16 @@ export async function POST(request: Request) {
         .from("bookings")
         .select("id, pickup_date, created_at")
         .eq("customer_email", customerEmail)
-        .eq("referral_code_used", referralCode)
+        .ilike("referral_code_used", referralCode)
         .eq("discount_applied", 50)
         .order("pickup_date", { ascending: true });
 
     if (previousError) {
       return NextResponse.json(
-        { valid: false, error: previousError.message },
+        {
+          valid: false,
+          message: `Booking usage check failed: ${previousError.message}`,
+        },
         { status: 500 }
       );
     }
@@ -110,9 +122,7 @@ export async function POST(request: Request) {
           expired: true,
           usedCount,
           remainingRides: 0,
-          message: `This referral discount expired on ${formatDate(
-            expiryDate
-          )}.`,
+          message: `This referral discount expired on ${formatDate(expiryDate)}.`,
         });
       }
     }
@@ -142,7 +152,10 @@ export async function POST(request: Request) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { valid: false, error: error.message || "Something went wrong" },
+      {
+        valid: false,
+        message: error.message || "Something went wrong while verifying referral code.",
+      },
       { status: 500 }
     );
   }
