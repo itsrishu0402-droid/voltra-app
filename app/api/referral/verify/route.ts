@@ -58,10 +58,10 @@ export async function POST(request: Request) {
     );
 
     const { data: profile, error: profileError } = await supabaseAdmin
-      .from("profiles")
-      .select("id, email, referral_code")
-      .eq("referral_code", referralCode)
-      .maybeSingle();
+  .from("profiles")
+  .select("id, email, referral_code")
+  .ilike("referral_code", referralCode)
+  .maybeSingle();
 
     if (profileError) {
       return NextResponse.json(
