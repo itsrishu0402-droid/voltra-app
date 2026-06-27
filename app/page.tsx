@@ -7,35 +7,122 @@ import { FaWhatsapp } from "react-icons/fa";
 
 export default function Home() {
   const [customerEmail, setCustomerEmail] = useState("");
+  const [upcomingRides, setUpcomingRides] = useState<any[]>([]);
+  const [ridesLoading, setRidesLoading] = useState(false);
+  const [nowTick, setNowTick] = useState(Date.now());
 
-useEffect(() => {
-  async function checkUser() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  useEffect(() => {
+    async function checkUser() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    if (user?.email) {
-      setCustomerEmail(user.email);
+      if (user?.email) {
+        setCustomerEmail(user.email);
+      }
     }
+
+    checkUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setCustomerEmail(session?.user?.email || "");
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    async function loadUpcomingRides() {
+      if (!customerEmail) {
+        setUpcomingRides([]);
+        return;
+      }
+
+      try {
+        setRidesLoading(true);
+
+        const today = new Date().toISOString().split("T")[0];
+
+        const { data, error } = await supabase
+          .from("bookings")
+          .select(
+            "id, name, phone, service_type, pickup, destination, pickup_date, pickup_time, trip_status, referral_code_used, discount_applied"
+          )
+          .eq("customer_email", customerEmail)
+          .gte("pickup_date", today)
+          .neq("trip_status", "completed")
+          .order("pickup_date", { ascending: true })
+          .order("pickup_time", { ascending: true });
+
+        if (error) {
+          console.log("UPCOMING RIDES ERROR:", error.message);
+          setUpcomingRides([]);
+          return;
+        }
+
+        const futureRides = (data || []).filter((ride: any) => {
+          const rideDateTime = new Date(
+            `${ride.pickup_date}T${ride.pickup_time}`
+          );
+
+          return rideDateTime.getTime() >= Date.now();
+        });
+
+        setUpcomingRides(futureRides);
+      } catch (error) {
+        console.log("UPCOMING RIDES ERROR:", error);
+        setUpcomingRides([]);
+      } finally {
+        setRidesLoading(false);
+      }
+    }
+
+    loadUpcomingRides();
+  }, [customerEmail]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNowTick(Date.now());
+    }, 60000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  async function logoutCustomer() {
+    await supabase.auth.signOut();
+    setCustomerEmail("");
+    setUpcomingRides([]);
   }
 
-  checkUser();
+  function getCountdownText(ride: any) {
+    const rideDateTime = new Date(`${ride.pickup_date}T${ride.pickup_time}`);
+    const difference = rideDateTime.getTime() - nowTick;
 
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((_event, session) => {
-    setCustomerEmail(session?.user?.email || "");
-  });
+    if (difference <= 0) {
+      return "Ride time reached";
+    }
 
-  return () => {
-    subscription.unsubscribe();
-  };
-}, []);
+    const totalMinutes = Math.floor(difference / (1000 * 60));
+    const days = Math.floor(totalMinutes / (60 * 24));
+    const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+    const minutes = totalMinutes % 60;
 
-async function logoutCustomer() {
-  await supabase.auth.signOut();
-  setCustomerEmail("");
-}
+    if (days > 0) {
+      return `${days} day${days > 1 ? "s" : ""} ${hours} hour${
+        hours !== 1 ? "s" : ""
+      } left`;
+    }
+
+    if (hours > 0) {
+      return `${hours} hour${hours !== 1 ? "s" : ""} ${minutes} min left`;
+    }
+
+    return `${minutes} min left`;
+  }
   return (
     <main className="min-h-screen bg-[#f4f7fb] text-black">
       <div className="max-w-7xl mx-auto px-6">
@@ -139,6 +226,110 @@ async function logoutCustomer() {
 )}
   </div>
 </nav>
+{customerEmail && (
+  <section className="mb-8">
+    <div className="bg-white rounded-[28px] border border-gray-100 shadow-xl p-5 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <p className="text-sm font-bold text-green-700 uppercase tracking-[0.18em]">
+            Your Upcoming Rides
+          </p>
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
+            Ride Schedule
+          </h2>
+        </div>
+
+        <div className="bg-green-50 border border-green-100 rounded-2xl px-4 py-3">
+          <p className="text-xs text-gray-500 font-semibold">
+            Logged in as
+          </p>
+          <p className="text-sm font-bold text-green-700 truncate max-w-[260px]">
+            {customerEmail}
+          </p>
+        </div>
+      </div>
+
+      {ridesLoading ? (
+        <div className="mt-5 bg-[#f7f8f2] rounded-2xl p-5 text-gray-600 font-semibold">
+          Loading your upcoming rides...
+        </div>
+      ) : upcomingRides.length > 0 ? (
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {upcomingRides.map((ride) => (
+            <div
+              key={ride.id}
+              className="bg-[#f7f8f2] rounded-2xl p-5 border border-gray-200"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                    {ride.service_type || "Cab & Travel Service"}
+                  </p>
+
+                  <h3 className="text-xl font-extrabold text-gray-900 mt-1">
+                    {ride.destination || "Upcoming Ride"}
+                  </h3>
+                </div>
+
+                <span className="bg-green-700 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  {ride.trip_status || "pending"}
+                </span>
+              </div>
+
+              <div className="mt-4 space-y-2 text-sm text-gray-700">
+                <p>
+                  <span className="font-bold">Pickup:</span>{" "}
+                  {ride.pickup || "-"}
+                </p>
+
+                <p>
+                  <span className="font-bold">Drop:</span>{" "}
+                  {ride.destination || "-"}
+                </p>
+
+                <p>
+                  <span className="font-bold">Date:</span>{" "}
+                  {ride.pickup_date || "-"}
+                </p>
+
+                <p>
+                  <span className="font-bold">Time:</span>{" "}
+                  {ride.pickup_time || "-"}
+                </p>
+              </div>
+
+              <div className="mt-5 bg-white rounded-2xl p-4 border border-green-100">
+                <p className="text-xs text-gray-500 font-semibold">
+                  Countdown
+                </p>
+
+                <p className="text-lg font-extrabold text-green-700 mt-1">
+                  {getCountdownText(ride)}
+                </p>
+              </div>
+
+              {ride.discount_applied > 0 && (
+                <p className="mt-3 text-sm font-bold text-green-700">
+                  Referral discount applied: ₹{ride.discount_applied}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-5 bg-[#f7f8f2] rounded-2xl p-5 border border-gray-200">
+          <p className="text-lg font-bold text-gray-900">
+            No upcoming rides yet.
+          </p>
+          <p className="text-gray-600 mt-1">
+            Book your next ride and it will appear here with a live countdown.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+)}
 
         {/* HERO */}
         <section id="services" className="py-12 sm:py-16">
@@ -597,6 +788,28 @@ async function logoutCustomer() {
           and fare.
         </div>
       </details>
+      <details className="group bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+  <summary className="flex justify-between items-center cursor-pointer list-none px-6 py-5 text-lg sm:text-xl font-bold">
+    How does the referral discount work?
+    <span className="text-green-700 group-open:rotate-180 transition-transform">
+      ▼
+    </span>
+  </summary>
+
+  <div className="px-6 pb-5 text-gray-600 leading-relaxed">
+    If you use a valid referral code, you can get ₹50 discount on each of your
+    next 2 rides. This referral discount can be used only within 6 months from
+    your first travel date using that referral code.
+    <br />
+
+    The person who referred you will receive ₹100 discount on each of their next
+    2 rides after your ride is completed. Their referral reward will also be
+    valid for 6 months from the date your completed ride is confirmed.
+    <br />
+    <br />
+    NOTE: Maximum discount a customer can receive is ₹150.
+  </div>
+</details>
     </div>
   </div>
 </section>
