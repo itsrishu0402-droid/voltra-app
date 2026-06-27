@@ -89,41 +89,70 @@ export default function AdminPage() {
   }
 
   async function markRideCompleted(bookingId: number) {
-    try {
-      const response = await fetch("/api/admin/update-booking-status", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password,
-          bookingId,
-          status: "completed",
-        }),
+  try {
+    const response = await fetch("/api/admin/update-booking-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password,
+        bookingId,
+        status: "completed",
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.error || "Unable to update ride status");
+      return;
+    }
+
+    setBookings((currentBookings) =>
+      currentBookings.map((booking) =>
+        booking.id === bookingId
+          ? { ...booking, trip_status: "completed" }
+          : booking
+      )
+    );
+
+    alert("Ride marked as completed.");
+
+    if (result.referralReward?.referrerPhone) {
+      const phoneNumber = formatPhone(result.referralReward.referrerPhone);
+
+      const message = `Hello! 🎉
+
+Good news from *Kyro Mobility*.
+
+Your referral code *${result.referralReward.referralCode}* was used by a customer, and their ride has been completed.
+
+You have earned:
+*₹100 off on each of your next 2 rides.*
+
+Thank you for referring Kyro Mobility.
+
+*Travel Smart. Feel Privileged.*`;
+
+      const params = new URLSearchParams({
+        phone: phoneNumber,
+        text: message,
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        alert(result.error || "Unable to update ride status");
-        return;
-      }
-
-      setBookings((currentBookings) =>
-        currentBookings.map((booking) =>
-          booking.id === bookingId
-            ? { ...booking, trip_status: "completed" }
-            : booking
-        )
-      );
-
-      alert("Ride marked as completed.");
-    } catch (error) {
-      console.log("STATUS UPDATE ERROR:", error);
-      alert("Something went wrong while updating status.");
+      window.open(`https://api.whatsapp.com/send?${params.toString()}`, "_blank");
     }
-  }
 
+    if (result.referralReward && !result.referralReward.referrerPhone) {
+      alert(
+        "Referral reward saved, but referrer's phone number is not available in profile."
+      );
+    }
+  } catch (error) {
+    console.log("STATUS UPDATE ERROR:", error);
+    alert("Something went wrong while updating status.");
+  }
+}
   return (
     <main className="min-h-screen bg-[#f7f8f2] text-black px-4 py-6">
       <div className="max-w-6xl mx-auto">

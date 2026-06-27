@@ -16,31 +16,88 @@ export default function BookPage() {
   const [locationLink, setLocationLink] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [serviceType, setServiceType] = useState("Airport Transfer");
-  const [referralCode, setReferralCode] = useState("");
+  const [referralCode, setReferralCode] = useState(""); 
   const [customerEmail, setCustomerEmail] = useState("");
   const [myReferralCode, setMyReferralCode] = useState("");
+  const [customerUserId, setCustomerUserId] = useState("");
+  const [referralStatus, setReferralStatus] = useState<
+
+  "idle" | "checking" | "valid" | "invalid" | "own"
+>("idle");
+
+const [referralMessage, setReferralMessage] = useState("");
   function generateReferralCode() {
   const randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
   return `KYRO${randomCode}`;
 }
+
 const isOwnReferralCode =
   referralCode.trim() !== "" &&
   myReferralCode.trim() !== "" &&
   referralCode.trim().toUpperCase() === myReferralCode.trim().toUpperCase();
-  useEffect(() => {
+
+async function verifyReferralCode() {
+  const code = referralCode.trim().toUpperCase();
+
+  if (!code) {
+    setReferralStatus("idle");
+    setReferralMessage("Please enter a referral code first.");
+    return;
+  }
+
+  if (myReferralCode && code === myReferralCode.trim().toUpperCase()) {
+    setReferralStatus("own");
+    setReferralMessage(
+      "You cannot use your own referral code. Please choose a different referral code."
+    );
+    return;
+  }
+
+  try {
+    setReferralStatus("checking");
+    setReferralMessage("Checking referral code...");
+
+    const response = await fetch("/api/referral/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ referralCode: code }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.valid) {
+      setReferralStatus("invalid");
+      setReferralMessage("Invalid referral code. Please check and try again.");
+      return;
+    }
+
+    setReferralStatus("valid");
+    setReferralMessage(
+      "Congratulations! You get ₹50 off on each of your next 2 rides."
+    );
+  } catch (error) {
+    console.log("REFERRAL VERIFY ERROR:", error);
+    setReferralStatus("invalid");
+    setReferralMessage("Unable to verify referral code. Please try again.");
+  }
+}
+
+useEffect(() => {
   async function getLoggedInUser() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) {
-  router.push("/login");
-  return;
-}
 
     if (!user) {
-  router.push("/login");
-  return;
-}
+      router.push("/login");
+      return;
+    }
+
+    if (user.id) {
+      setCustomerUserId(user.id);
+    }
 
     if (user.email) {
       setCustomerEmail(user.email);
@@ -77,61 +134,85 @@ const isOwnReferralCode =
   getLoggedInUser();
 }, [router]);
 
-  const isFormValid =
-    name.trim().length >= 2 &&
-    name.trim().length <= 20 &&
-    phone.length === 10 &&
-    pickup.trim() !== "" &&
-    destination.trim() !== "" &&
-    pickupDate !== "" &&
-    pickupTime !== "";
+const isFormValid =
+  name.trim().length >= 2 &&
+  name.trim().length <= 20 &&
+  phone.length === 10 &&
+  pickup.trim() !== "" &&
+  destination.trim() !== "" &&
+  pickupDate !== "" &&
+  pickupTime !== "";
 
-  async function submitBooking() {
-    if (isOwnReferralCode) {
-  alert("You cannot use your own referral code. Please choose a different referral code or remove it.");
-  return;
-}
-    if (!isFormValid) {
-      alert("Please fill all details correctly.");
-      return;
-    }
-
-    const selectedDateTime = new Date(`${pickupDate}T${pickupTime}`);
-    const now = new Date();
-
-    if (selectedDateTime <= now) {
-      alert("Please select a future date and time.");
-      return;
-    }
-
- const { error } = await supabase.from("bookings").insert({
-  name,
-  phone,
-  customer_email: customerEmail || null,
-  referral_code_used: referralCode || null,
-  pickup,
-  destination,
-  pickup_date: pickupDate,
-  pickup_time: pickupTime,
-  location_link: locationLink || null,
-  passengers: 1,
-});
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Booking submitted successfully! Our team will contact you shortly.");
-
-      setName("");
-      setPhone("");
-      setPickup("");
-      setDestination("");
-      setPickupDate("");
-      setPickupTime("");
-      setLocationLink("");
-      setReferralCode("");
-      setServiceType("Airport Transfer");
-    }
+async function submitBooking() {
+  if (isOwnReferralCode) {
+    alert(
+      "You cannot use your own referral code. Please choose a different referral code or remove it."
+    );
+    return;
   }
+
+  if (referralCode && referralStatus !== "valid") {
+    alert("Please verify the referral code or remove it before booking.");
+    return;
+  }
+
+  if (!isFormValid) {
+    alert("Please fill all details correctly.");
+    return;
+  }
+
+  const selectedDateTime = new Date(`${pickupDate}T${pickupTime}`);
+  const now = new Date();
+
+  if (selectedDateTime <= now) {
+    alert("Please select a future pickup date and time.");
+    return;
+  }
+
+  const { error } = await supabase.from("bookings").insert({
+    name,
+    phone,
+    customer_email: customerEmail || null,
+    referral_code_used:
+      referralCode && referralStatus === "valid" ? referralCode : null,
+    discount_applied: referralCode && referralStatus === "valid" ? 50 : 0,
+    service_type: serviceType,
+    pickup,
+    destination,
+    pickup_date: pickupDate,
+    pickup_time: pickupTime,
+    location_link: locationLink || null,
+    passengers: 1,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  if (customerUserId) {
+    await supabase
+      .from("profiles")
+      .update({
+        phone,
+      })
+      .eq("id", customerUserId);
+  }
+
+  alert("Booking submitted successfully! Our team will contact you shortly.");
+
+  setName("");
+  setPhone("");
+  setPickup("");
+  setDestination("");
+  setPickupDate("");
+  setPickupTime("");
+  setLocationLink("");
+  setReferralCode("");
+  setReferralStatus("idle");
+  setReferralMessage("");
+  setServiceType("Airport Transfer");
+}
 
   return (
     <main className="min-h-screen bg-[#f7f8f2] text-black">
@@ -340,13 +421,14 @@ const isOwnReferralCode =
           {/* RIGHT BOOKING FORM */}
           <div className="lg:col-span-2 bg-white rounded-3xl shadow-xl p-5 sm:p-6 lg:p-8 order-1 lg:order-2">
             <h2 className="text-3xl sm:text-4xl font-extrabold">
-              Trip Details
-              {customerEmail && (
+  Trip Details
+</h2>
+
+{customerEmail && (
   <p className="mt-2 text-sm text-green-700 font-semibold">
     Signed in as: {customerEmail}
   </p>
 )}
-            </h2>
 
             <p className="text-gray-600 mt-3">
               Fill the details below. Our team will contact you to confirm the trip.
@@ -508,32 +590,54 @@ const isOwnReferralCode =
     Referral Code <span className="text-gray-400">(Optional)</span>
   </label>
 
-  <input
-    value={referralCode}
-    onChange={(e) =>
-      setReferralCode(e.target.value.trim().toUpperCase())
-    }
-    placeholder="Example: KYRO7A92X"
-    className={`w-full mt-2 p-4 rounded-xl border outline-none ${
-      isOwnReferralCode
-        ? "border-red-500 focus:border-red-600"
-        : "border-gray-300 focus:border-green-700"
-    }`}
-  />
+  <div className="mt-2 flex flex-col sm:flex-row gap-3">
+    <input
+      value={referralCode}
+      onChange={(e) => {
+        setReferralCode(e.target.value.trim().toUpperCase());
+        setReferralStatus("idle");
+        setReferralMessage("");
+      }}
+      placeholder="Example: KYRO7A92X"
+      className={`w-full p-4 rounded-xl border outline-none ${
+        referralStatus === "invalid" ||
+        referralStatus === "own" ||
+        isOwnReferralCode
+          ? "border-red-500 focus:border-red-600"
+          : referralStatus === "valid"
+          ? "border-green-600 focus:border-green-700"
+          : "border-gray-300 focus:border-green-700"
+      }`}
+    />
 
-  {isOwnReferralCode ? (
-    <p className="text-sm text-red-600 font-semibold mt-2">
-      You cannot use your own referral code. Please choose a different referral
-      code or remove it.
+    <button
+      type="button"
+      onClick={verifyReferralCode}
+      disabled={!referralCode || referralStatus === "checking"}
+      className="sm:w-44 bg-gray-900 text-white px-5 py-4 rounded-xl font-bold hover:bg-black disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      {referralStatus === "checking" ? "Checking..." : "Verify"}
+    </button>
+  </div>
+
+  {referralMessage ? (
+    <p
+      className={`text-sm font-semibold mt-2 ${
+        referralStatus === "valid" ? "text-green-700" : "text-red-600"
+      }`}
+    >
+      {referralMessage}
     </p>
   ) : (
     <p className="text-xs text-gray-400 mt-1">
       Enter referral code if someone referred you.
     </p>
-  )}
+    )}
 </div>
+
 </div>
-            <div className="bg-green-50 border border-green-100 rounded-2xl p-5 mt-8">
+
+<div className="bg-green-50 border border-green-100 rounded-2xl p-5 mt-8">
               <h3 className="font-bold text-green-800">
                 Booking Note
               </h3>
@@ -544,12 +648,18 @@ const isOwnReferralCode =
 
             <button
               onClick={submitBooking}
-              disabled={!isFormValid || isOwnReferralCode}
+              disabled={
+  !isFormValid ||
+  isOwnReferralCode ||
+  (referralCode.trim() !== "" && referralStatus !== "valid")
+}
               className={`w-full mt-8 py-4 rounded-xl text-lg font-bold transition-all ${
-                isFormValid
-                  ? "bg-green-700 text-white hover:bg-green-800"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
+  !isFormValid ||
+  isOwnReferralCode ||
+  (referralCode.trim() !== "" && referralStatus !== "valid")
+    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+    : "bg-green-700 text-white hover:bg-green-800"
+}`}
             >
               Submit Booking Request
             </button>
