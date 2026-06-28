@@ -10,6 +10,8 @@ export default function Home() {
   const [upcomingRides, setUpcomingRides] = useState<any[]>([]);
   const [ridesLoading, setRidesLoading] = useState(false);
   const [nowTick, setNowTick] = useState(Date.now());
+  const [referralRewards, setReferralRewards] = useState<any[]>([]);
+const [rewardsLoading, setRewardsLoading] = useState(false);
 
   useEffect(() => {
     async function checkUser() {
@@ -83,7 +85,53 @@ export default function Home() {
 
     loadUpcomingRides();
   }, [customerEmail]);
+useEffect(() => {
+  async function loadReferralRewards() {
+    if (!customerEmail) {
+      setReferralRewards([]);
+      return;
+    }
 
+    try {
+      setRewardsLoading(true);
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setReferralRewards([]);
+        return;
+      }
+
+      const now = new Date().toISOString();
+
+      const { data, error } = await supabase
+        .from("referral_rewards")
+        .select("id, reward_amount, rides_remaining, reward_reason, status, referral_code, expires_at, created_at")
+        .eq("user_id", user.id)
+        .eq("status", "active")
+        .gt("rides_remaining", 0)
+        .or(`expires_at.is.null,expires_at.gte.${now}`)
+        .order("expires_at", { ascending: true });
+
+      if (error) {
+        console.log("REWARDS ERROR:", error.message);
+        setReferralRewards([]);
+        return;
+      }
+
+      setReferralRewards(data || []);
+    } catch (error) {
+      console.log("REWARDS ERROR:", error);
+      setReferralRewards([]);
+    } finally {
+      setRewardsLoading(false);
+    }
+  }
+
+  loadReferralRewards();
+}, [customerEmail]);
   useEffect(() => {
     const timer = setInterval(() => {
       setNowTick(Date.now());
@@ -331,6 +379,80 @@ export default function Home() {
           </p>
           <p className="text-gray-600 mt-1">
             Book your next ride and it will appear here with a live countdown.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+{customerEmail && (
+  <section className="mb-8">
+    <div className="bg-white rounded-[28px] border border-gray-100 shadow-xl p-5 sm:p-6">
+      <p className="text-sm font-bold text-green-700 uppercase tracking-[0.18em]">
+        Your Referral Rewards
+      </p>
+
+      <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
+        Discount Balance
+      </h2>
+
+      {rewardsLoading ? (
+        <div className="mt-5 bg-[#f7f8f2] rounded-2xl p-5 text-gray-600 font-semibold">
+          Loading your referral rewards...
+        </div>
+      ) : referralRewards.length > 0 ? (
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {referralRewards.map((reward) => (
+            <div
+              key={reward.id}
+              className="bg-[#f7f8f2] rounded-2xl p-5 border border-green-100"
+            >
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                Referral Reward
+              </p>
+
+              <h3 className="text-xl font-extrabold text-green-700 mt-1">
+                ₹{reward.reward_amount} off
+              </h3>
+
+              <p className="text-gray-700 mt-3">
+                Available on your next{" "}
+                <span className="font-extrabold text-gray-900">
+                  {reward.rides_remaining}
+                </span>{" "}
+                ride{reward.rides_remaining > 1 ? "s" : ""}.
+              </p>
+
+              <p className="text-gray-600 mt-2 text-sm">
+                Referral Code:{" "}
+                <span className="font-bold text-gray-900">
+                  {reward.referral_code || "-"}
+                </span>
+              </p>
+
+              <p className="text-gray-600 mt-2 text-sm">
+                Valid Till:{" "}
+                <span className="font-bold text-gray-900">
+                  {reward.expires_at
+                    ? new Date(reward.expires_at).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    : "Not set"}
+                </span>
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-5 bg-[#f7f8f2] rounded-2xl p-5 border border-gray-200">
+          <p className="text-lg font-bold text-gray-900">
+            No active referral rewards.
+          </p>
+          <p className="text-gray-600 mt-1">
+            When someone uses your referral code and completes their ride, your
+            reward balance will appear here.
           </p>
         </div>
       )}
